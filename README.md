@@ -1,3 +1,3 @@
 # TP-TADs
-Trabajo práctico de TADs (Algoritmos II)
-TAD Mapa y Campus
+Trabajo Práctico de Tipos Abstractos de Datos
+Algoritmos y Estructuras de Datos II
