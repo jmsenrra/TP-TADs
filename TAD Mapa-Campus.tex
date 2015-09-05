@@ -45,28 +45,33 @@
 
 \begin{document}
 
-\section{TAD \tadNombre{Mapa}}
+\begin{tad}{\tadNombre{Posición} es \tadNombre{Tupla(nat $\times$ nat)}}
+
+\end{tad} %no sé cómo borrar el Fin TAD
+
+\begin{tad}{\tadNombre{Agente} es \tadNombre{Tupla(nat $\times$ nat $\times$ nat)}}
+
+\end{tad}
+
 
 \begin{tad}{\tadNombre{Mapa}}
 \tadGeneros{map}
 \tadExporta{}
 \tadUsa{\tadNombre{}}
-
 \tadIgualdadObservacional{}{}{}{}
-\tadAlinearFunciones{posicionesAMenorDistanciaAux\argumento = 0?}{asd123asd123asd123asd123aasdasdasdas/$n$,nat/$m$}
-\tadObservadores
 
+\tadAlinearFunciones{posicionesAMenorDistanciaAux}{nat /al, nat /an,conj(tupla(nat, nat)/obstaculos}
+
+\tadObservadores
 \tadOperacion{obstáculos}{map}{conj (posición)}{}
 \tadOperacion{ancho}{map}{nat}{}
 \tadOperacion{alto}{map}{nat}{}
 
 \tadGeneradores
-
 \tadOperacion{nuevoMapa}{nat /al, nat /an,conj(tupla(nat, nat)/obstaculos}{map}{$ (al \geq 1) \land(an \geq 1) \land ((\forall :o\hspace{0,1cm}tupla(nat\hspace{0,1cm} , \hspace{0,1cm}nat)) \hspace{0,1cm} o \in obstaculos \iff 1 \leq \Pi_1(o)\leq an \land 1 \leq \Pi_2(o)\leq al) $ }
 
 \tadOtrasOperaciones
-
-\tadOperacion{Distancia}{posición,posición}{nat (origen,destino)}{}
+\tadOperacion{distancia}{posición,posición}{nat (origen,destino)}{}
 \tadOperacion{izquierda}{posición}{posición}{}
 \tadOperacion{derecha}{posición}{posición}{}
 \tadOperacion{arriba}{posición}{posición}{}
@@ -79,34 +84,22 @@
 \tadOperacion{hayUnoAMenorDistancia}{posición /p1,posición /p2,conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
 \tadOperacion{estáArriba?}{posición,posición}{bool}{}
 \tadOperacion{estáAbajo?}{posicion,posición}{bool}{}
-\tadOperacion{estáDerecha?}{posición,posición}{bool}{}
-\tadOperacion{estáIzquierda?}{posición,posición}{bool}{}
-\tadOperacion{estáEnLaPrimeraDiagonal?}{posición,posición}{bool}{}
+\tadOperacion{estáALaDerecha?}{posición,posición}{bool}{}
+\tadOperacion{estáALaIzquierda?}{posición,posición}{bool}{}
+\tadOperacion{estáEnLaPrimerDiagonal?}{posición,posición}{bool}{}
 \tadOperacion{estáEnLaSegundaDiagonal?}{posición,posición}{bool}{}
-\tadOperacion{estáEnLaTerceraDiagonal?}{posición,posición}{bool}{}
+\tadOperacion{estáEnLaTercerDiagonal?}{posición,posición}{bool}{}
 \tadOperacion{estáEnLaCuartaDiagonal?}{posición,posición}{bool}{}
 
+\tadAxiomas[\paratodo{}{}]
 
-
-
-
-\tadAxiomas[\paratodo{nat}{n, m}]
-\tadAlinearAxiomas{PosicionesAMenorDistanciaAux(p,ps)}
+\tadAlinearAxiomas{obstaculos(nuevoMapa(al,an,obstaculos))}
 
 \tadAxioma{obstaculos(nuevoMapa(al,an,obstaculos))}{obstaculos}
 \tadAxioma{ancho(nuevoMapa(al,an))}{an}
 \tadAxioma{alto(nuevoMapa(al,an))}{an}
-\tadAxioma{$n+m$}{\IF\ $m=0?$ THEN $n$ ELSE suc($n$ $+$ pred($m$)) FI}
-\tadAxioma{$n-m$}{\IF\ $m=0?$ THEN $n$ ELSE pred($n$) $-$ pred($m$) FI}
-\tadAxioma{$n \times m$}{\IF\ $m=0?$ THEN $0$ ELSE $n$ $\times$ pred($m$) $+$ $n$ FI}
-\tadAxioma{$n < m$}{$\lnot(m=0?)$ $\yluego$ $(n=0? \oluego\ \text{pred}(n)<\text{pred}(m))$}
-\tadAxioma{$n \leq m$}{$n < m \lor n = m$}
-\tadAxioma{$\min(n, m)$}{\IF\ $m < n$ THEN $m$ ELSE $n$ FI}
-\tadAxioma{$\max(n, m)$}{\IF\ $m < n$ THEN $n$ ELSE $m$ FI}
 
 \end{tad}
-
-\section{TAD \tadNombre{Campus}}
 
 \begin{tad}{\tadNombre{Campus}}
 \tadIgualdadObservacional{}{}{}{}
@@ -119,8 +112,7 @@
 \tadExporta{}
 \tadUsa{\tadNombre{}}
 
-%notar la importancia de agrupar el ultimo parametro, para la coma
-\tadAlinearFunciones{AgentesMasVigilantesAux}{clave,significado,{dicc(clave, significado)}}
+\tadAlinearFunciones{AgentesMasVigilantesAux}{camp /c,posición /origen, posición /destino}
 
 \tadObservadores 
 \tadOperacion{mapa}{camp}{map}{} 
@@ -140,33 +132,24 @@
 {$R1:= (1 \leq \Pi_1(p)\leq ancho(m)) \land (\Pi_2(p) = 0 \lor \Pi_2(p) = alto(mapa(c))) \land (\neg(p \in obstaculos(mapa(c)))) \land (\neg(p \in estudiantes(c))) \land (\neg(p \in claves(agentes(c)))) \land (\neg(p \in hippies(c))$}
 
 \tadOtrasOperaciones
-\tadOperacion{cuántosHippies?}{camp}{nat}{}
-\tadOperacion{cuántosEstudiantes?}{camp}{nat}{}
+\tadOperacion{\#hippies}{camp}{nat}{}
+\tadOperacion{\#estudiantes}{camp}{nat}{}
 \tadOperacion{agenteMásVigilante}{camp}{nat}{}
 \tadOperacion{agentesMásVigilantes}{camp,conj(posición)}{conj(posición)}{}
 \tadOperacion{agentesMásVigilantesAux}{camp,conj(posición)}{conj(posición)}{}
 \tadOperacion{todosIgualDeVigilantes}{camp,nat, conj(posición)}{bool}{}
 \tadOperacion{hayUnoMásVigilante}{camp,posición, conj(posición)}{bool}{}
-\tadOperacion{cuántosHippiesCerca?}{camp,posición}{nat}{}
+\tadOperacion{\#hippiesCerca}{camp,posición}{nat}{}
 \tadOperacion{lugarVacío?}{camp,posición}{bool}{}
 \tadOperacion{opcionesDeMovimiento}{camp,posición}{conj(posición)}{}
 \tadOperacion{hayUnoAlLado}{camp /c,posición /p, conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
 \tadOperacion{nuevaPosición}{camp /c,posición /p, conj(posición) /ps}{posición}{$(p \in hippies(c)) \lor (p \in claves(agentes(c)))) \land \neg (\emptyset?(ps))$}
 
+\tadAxiomas[\paratodo{}{}]
 
-\tadAxiomas[\paratodo{dicc(clave, significado)}{d}, \paratodo{clave}{c, k}, \paratodo{significado}{s}]
-\tadAlinearAxiomas{obtener($c$, definir($k$, $s$, $d$))}
+\tadAlinearAxiomas{agentesMasVigilantesAux(c,p)}
 
-\tadAxioma{def?($c$,vacío)}{false}
-\tadAxioma{def?($c$, definir($k$, $s$, $d$)}{$c = k$ $\lor$ def?($c$, $d$)}
-
-\tadAxioma{obtener($c$, definir($k$, $s$, $d$))}{\IF $c = k$ THEN $s$ ELSE obtener($c$, $d$) FI}
-
-\tadAxioma{borrar($c$, definir($k$, $s$, $d$))}{\IF $c = k$ THEN {\IF def?($c$,$d$) THEN borrar($c$,$d$) ELSE $d$ FI} ELSE
-definir($k$, $s$, borrar($c$, $d$)) FI}
-
-\tadAxioma{claves(vacío)}{$\emptyset$}
-\tadAxioma{claves(definir($c$,$s$,$d$))}{Ag($c$, claves($d$))}
+\tadAxioma{}{}
 
 \end{tad}
 
