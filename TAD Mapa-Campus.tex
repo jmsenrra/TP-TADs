@@ -71,25 +71,25 @@
 \tadOperacion{nuevoMapa}{nat /al, nat /an,conj(tupla(nat, nat)/obstaculos}{map}{$ (al \geq 1) \land(an \geq 1) \land ((\forall :o\hspace{0,1cm}tupla(nat\hspace{0,1cm} , \hspace{0,1cm}nat)) \hspace{0,1cm} o \in obstaculos \iff 1 \leq \Pi_1(o)\leq an \land 1 \leq \Pi_2(o)\leq al) $ }
 
 \tadOtrasOperaciones
-\tadOperacion{distancia}{posición,posición}{nat (origen,destino)}{}
-\tadOperacion{izquierda}{posición}{posición}{}
-\tadOperacion{derecha}{posición}{posición}{}
-\tadOperacion{arriba}{posición}{posición}{}
-\tadOperacion{abajo}{map,posición}{bool}{}
-\tadOperacion{fueraDelMapa}{posición}{posición}{}
-\tadOperacion{posicionesAMenorDistancia}{posición,conj(posición)}{conj(posición)}{}
-\tadOperacion{posicionesAMenorDistanciaAux}{posición,conj(posición)}{conj(posición)}{}
-\tadOperacion{todosALaMismaDistancia}{posición /p,conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
-\tadOperacion{todosALaMismaDistanciaAux}{posición /p,conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
-\tadOperacion{hayUnoAMenorDistancia}{posición /p1,posición /p2,conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
-\tadOperacion{estáArriba?}{posición,posición}{bool}{}
-\tadOperacion{estáAbajo?}{posicion,posición}{bool}{}
-\tadOperacion{estáALaDerecha?}{posición,posición}{bool}{}
-\tadOperacion{estáALaIzquierda?}{posición,posición}{bool}{}
-\tadOperacion{estáEnLaPrimerDiagonal?}{posición,posición}{bool}{}
-\tadOperacion{estáEnLaSegundaDiagonal?}{posición,posición}{bool}{}
-\tadOperacion{estáEnLaTercerDiagonal?}{posición,posición}{bool}{}
-\tadOperacion{estáEnLaCuartaDiagonal?}{posición,posición}{bool}{}
+\tadOperacion{Distancia}{posición,posición}{nat (origen,destino)}{}
+\tadOperacion{Izquierda}{posición}{posición}{}
+\tadOperacion{Derecha}{posición}{posición}{}
+\tadOperacion{Arriba}{posición}{posición}{}
+\tadOperacion{Abajo}{map,posición}{bool}{}
+\tadOperacion{FueraDelMapa}{posición}{posición}{}
+\tadOperacion{PosicionesAMenorDistancia}{posición,conj(posición)}{conj(posición)}{}
+\tadOperacion{PosicionesAMenorDistanciaAux}{posición,conj(posición)}{conj(posición)}{}
+\tadOperacion{TodosALaMismaDistancia}{posición /p,conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
+\tadOperacion{TodosALaMismaDistanciaAux}{posición /p,conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
+\tadOperacion{HayUnoAMenorDistancia}{posición /p1,posición /p2,conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
+\tadOperacion{EstáArriba?}{posición,posición}{bool}{}
+\tadOperacion{EstáAbajo?}{posicion,posición}{bool}{}
+\tadOperacion{EstáALaDerecha?}{posición,posición}{bool}{}
+\tadOperacion{EstáALaIzquierda?}{posición,posición}{bool}{}
+\tadOperacion{EstáEnLaPrimerDiagonal?}{posición,posición}{bool}{}
+\tadOperacion{EstáEnLaSegundaDiagonal?}{posición,posición}{bool}{}
+\tadOperacion{EstáEnLaTercerDiagonal?}{posición,posición}{bool}{}
+\tadOperacion{EstáEnLaCuartaDiagonal?}{posición,posición}{bool}{}
 
 \tadAxiomas[\paratodo{}{}]
 
@@ -104,10 +104,7 @@ $}
 \tadAxioma {Derecha(p)} {$\langle suc(\Pi_1(p)),\Pi_2(p) \rangle$}
 \tadAxioma {Arriba(p)} {$\langle \Pi_1(p),pred (\Pi_2(p)) \rangle$}
 \tadAxioma {Abajo(p)} {$\langle \Pi_1(p), suc(\Pi_2(p)) \rangle$}
-\tadAxioma {fueraDelMapa(m,p)} {$\Pi_1(p)<1 \lor \Pi_2(p)<1 \lor ancho(m)<\Pi_1(p) \lor alto(m)<\Pi_2(p)$}
-
-
-
+\tadAxioma {FueraDelMapa(m,p)} {$\Pi_1(p)<1 \lor \Pi_2(p)<1 \lor ancho(m)<\Pi_1(p) \lor alto(m)<\Pi_2(p)$}
 
 \end{tad}
 
@@ -144,20 +141,20 @@ $}
 \tadOtrasOperaciones
 \tadOperacion{\#hippies}{camp}{nat}{}
 \tadOperacion{\#estudiantes}{camp}{nat}{}
-\tadOperacion{agenteMásVigilante}{camp}{nat}{}
-\tadOperacion{agentesMásVigilantes}{camp,conj(posición)}{conj(posición)}{}
-\tadOperacion{agentesMásVigilantesAux}{camp,conj(posición)}{conj(posición)}{}
-\tadOperacion{todosIgualDeVigilantes}{camp,nat, conj(posición)}{bool}{}
-\tadOperacion{hayUnoMásVigilante}{camp,posición, conj(posición)}{bool}{}
+\tadOperacion{AgenteMásVigilante}{camp}{nat}{}
+\tadOperacion{AgentesMásVigilantes}{camp,conj(posición)}{conj(posición)}{}
+\tadOperacion{AgentesMásVigilantesAux}{camp,conj(posición)}{conj(posición)}{}
+\tadOperacion{TodosIgualDeVigilantes}{camp,nat, conj(posición)}{bool}{}
+\tadOperacion{HayUnoMásVigilante}{camp,posición, conj(posición)}{bool}{}
 \tadOperacion{\#hippiesCerca}{camp,posición}{nat}{}
-\tadOperacion{lugarVacío?}{camp,posición}{bool}{}
-\tadOperacion{opcionesDeMovimiento}{camp,posición}{conj(posición)}{}
-\tadOperacion{hayUnoAlLado}{camp /c,posición /p, conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
-\tadOperacion{nuevaPosición}{camp /c,posición /p, conj(posición) /ps}{posición}{$(p \in hippies(c)) \lor (p \in claves(agentes(c)))) \land \neg (\emptyset?(ps))$}
+\tadOperacion{LugarVacío?}{camp,posición}{bool}{}
+\tadOperacion{OpcionesDeMovimiento}{camp,posición}{conj(posición)}{}
+\tadOperacion{HayUnoAlLado}{camp /c,posición /p, conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
+\tadOperacion{NuevaPosición}{camp /c,posición /p, conj(posición) /ps}{posición}{$(p \in hippies(c)) \lor (p \in claves(agentes(c)))) \land \neg (\emptyset?(ps))$}
 
 \tadAxiomas[\paratodo{}{}]
 
-\tadAlinearAxiomas{agentesMasVigilantesAux(c,p)}
+\tadAlinearAxiomas{TodosIgualDeVigilantes(c,capturas,ps)}
 
 \tadAxioma{mapa(rastrillaje(m,a))}{m}
 \tadAxioma{mapa(entraH(c,p))}{mapa(c)}
@@ -171,6 +168,30 @@ $}
 \tadAxioma{estudiantes(mueveH(c,p))}{$\pi_1$(hMovido(c,p,NuevaPosicion(c,p,estudiantes(c))))}
 \tadAxioma{estudiantes(mueveE(c,p1,p2))}{$\pi_1$(eMovido(c,p1,p2))}
 \tadAxioma{estudiantes(mueveA(c,p))}{$\pi_1$(aMovido(c,p,NuevaPosicion(c,p,hippies(c))))}
+\tadAxioma{hippies(rastrillaje(m,a))}{$\emptyset$}
+\tadAxioma{hippies(entraH(c,p))}{$\pi_2$(hNuevo(c,p))}
+\tadAxioma{hippies(entraE(c,p))}{$\pi_2$(eNuevo(c,p))}
+\tadAxioma{hippies(mueveH(c,p))}{ $\pi_2$(hMovido(c,p,NuevaPosicion(c,p,estudiantes(c))))}
+\tadAxioma{hippies(mueveE(c,p1,p2))}{pi2(eMovido(c,p1,p2))}
+\tadAxioma{hippies(mueveA(c,p))}{ $\pi_2$(aMovido(c,p,NuevaPosicion(c,p,hippies(c))))}
+\tadAxioma{agentes(rastrillaje(m,a))}{a}
+\tadAxioma{agentes(entraH(c,p))}{pi3(hNuevo(c,p))}
+\tadAxioma{agentes(entraE(c,p))}{pi3(eNuevo(c,p))}
+\tadAxioma{agentes(mueveH(c,p))}{ $\pi_3$(hMovido(c,p,NuevaPosicion(c,p,estudiantes(c))))}
+\tadAxioma{agentes(mueveE(c,p1,p2))}{pi3(eMovido(c,p1,p2))}
+\tadAxioma{agentes(mueveA(c,p))}{ $\pi_3$(aMovido(c,p,NuevaPosicion(c,p,hippies(c))))}
+\tadAxioma{\#hippies(c)}{\#hippies(c)}
+\tadAxioma{\#estudiantes(c)}{\#estudiantes(c)}
+\tadAxioma{AgenteMasVigilante(c)}{ 
+AgenteConPlacaMasChica(c, AgentesMasVigilantes(c, claves(agentes(c))))}
+\tadAxioma{AgentesMasVigilantes(c,ps)}{\IF \#ps > 2 THEN{\IF TodosIgualDeVigilantes(c,$\pi_2$(obtener(dameUno(ps)),agentes(c)),ps) THEN ps ELSE {\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) < $\pi_2$(obtener(dameUno(sinUno(ps)),agentes(c))) THEN AgentesMasVigilantes(c,ps - {dameUno(ps)}) ELSE {\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) > $\pi_2$(obtener(dameUno(sinUno(ps)),agentes(c))) THEN AgentesMasVigilantes(c,ps - {dameUno(sinUno(ps))}) ELSE {\IF HayUnoMasVigilante(c,dameUno(ps),ps) THEN AgentesMasVigilantes(c,sinUno(sinUno(ps))) ELSE {dameUno(sinUno(ps))} $\cup$ {dameUno(ps)} $\cup$ AgentesMasVigilantes(c,sinUno(sinUno(ps))) FI} FI} FI} FI} ELSE AgentesMasVigilantesAux(c,ps)FI}
+\tadAxioma{AgentesMasVigilantesAux(c,ps)}{\IF \#ps == 1 THEN ps ELSE {\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) > $\pi_2$(obtener(dameUno(sinUno(ps)),agentes(c))) THEN {dameUno(ps)} ELSE {\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) < $\pi_2$(obtener(dameUno(sinUno(ps)),agentes(c))) THEN {dameUno(sinUno(ps))} ELSE ps FI} FI} FI}
+\tadAxioma{TodosIgualDeVigilantes(c,capturas,ps)}{\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) == capturas $\wedge$ $\neg$($\emptyset$?(sinUno(ps))) THEN TodosIgualDeVigilantes(c,capturas,sinUno(ps)) ELSE $\pi_2$(obtener(dameUno(ps),agentes(c))) == capturas FI}
+\tadAxioma{HayUnoMasVigilante(c,p,ps)}{\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) > $\pi_2$(obtener(p,agentes(c))) THEN true ELSE {\IF $\neg$($\emptyset$?(sinUno(ps))) THEN HayUnoMasVigilante(c,p,sinUno(ps)) ELSE false FI} FI}
+\tadAxioma{AgenteConPlacaMasChica(c,ps)}{}
+\tadAxioma{\#hippiesCerca(c,p)}{$\beta$(Arriba(p) $\in$ hippies(c)) + $\beta$(Abajo(p) $\in$ hippies(c)) + $\beta$(Derecha(p) $\in$ hippies(c)) + $\beta$(Izquierda(p) $\in$ hippies(c))}
+\tadAxioma{LugarVacío?(c,p)}{$\neg$(p $\in$ estudiantes(c)) $\wedge$ $\neg$(p $\in$ hippies(c)) $\wedge$ $\neg$(p $\in$ claves(agentes(c))) $\wedge$ $\neg$(p $\in$ obstáculos(mapa(c)))}
+ 
 
 \end{tad}
 
