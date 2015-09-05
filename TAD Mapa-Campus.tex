@@ -149,7 +149,18 @@
 
 \tadAlinearAxiomas{agentesMasVigilantesAux(c,p)}
 
-\tadAxioma{}{}
+\tadAxioma{mapa(rastrillaje(m,a))}{m}
+\tadAxioma{mapa(entraH(c,p))}{mapa(c)}
+\tadAxioma{mapa(entraE(c,p))}{mapa(c)}
+\tadAxioma{mapa(mueveH(c,p))}{mapa(c)}
+\tadAxioma{mapa(mueveE(c,p1,p2))}{mapa(c)}
+\tadAxioma{mapa(mueveA(c,p))}{mapa(c)}
+\tadAxioma{estudiantes(rastrillaje(m,a))}{$\emptyset$}
+\tadAxioma{estudiantes(entraH(c,p))}{$\pi_1$(hNuevo(c,p))} 
+\tadAxioma{estudiantes(entraE(c,p))}{$\pi_1$(eNuevo(c,p))}
+\tadAxioma{estudiantes(mueveH(c,p))}{$\pi_1$(hMovido(c,p,NuevaPosicion(c,p,estudiantes(c))))}
+\tadAxioma{estudiantes(mueveE(c,p1,p2))}{$\pi_1$(eMovido(c,p1,p2))}
+\tadAxioma{estudiantes(mueveA(c,p))}{$\pi_1$(aMovido(c,p,NuevaPosicion(c,p,hippies(c))))}
 
 \end{tad}
 
