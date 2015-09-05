@@ -53,45 +53,55 @@
 \tadUsa{\tadNombre{}}
 
 \tadIgualdadObservacional{}{}{}{}
-\tadAlinearFunciones{obst\argumento = 0?}{asd123asd123asd123asd123aasdasdasdasdasasd123asd1/$n$,nat/$m$}
+\tadAlinearFunciones{posicionesAMenorDistanciaAux\argumento = 0?}{asd123asd123asd123asd123aasdasdasdas/$n$,nat/$m$}
 \tadObservadores
 
-\tadOperacion{obstaculos}{map}{conj (posicion)}{}
+\tadOperacion{obstáculos}{map}{conj (posición)}{}
 \tadOperacion{ancho}{map}{nat}{}
 \tadOperacion{alto}{map}{nat}{}
 
 \tadGeneradores
 
-\tadOperacion{nuevoMapa}{nat /al, nat /an,conj(tupla(nat, nat)/obstaculos}{map}{$ (al \geq 1) \land(an \geq 1) \land \forall :o tupla(nat,nat)) o \in obstaculos \iff  $ }
-\tadOperacion{suc}{nat}{nat}{}
+\tadOperacion{nuevoMapa}{nat /al, nat /an,conj(tupla(nat, nat)/obstaculos}{map}{$ (al \geq 1) \land(an \geq 1) \land ((\forall :o\hspace{0,1cm}tupla(nat\hspace{0,1cm} , \hspace{0,1cm}nat)) \hspace{0,1cm} o \in obstaculos \iff 1 \leq \Pi_1(o)\leq an \land 1 \leq \Pi_2(o)\leq al) $ }
 
 \tadOtrasOperaciones
 
-\tadOperacion{\argumento $+$ \argumento}{nat,nat}{nat}{}
-\tadOperacion{\argumento $-$ \argumento}{nat/n,nat/m}{nat}{$m \leq n$}
-\tadOperacion{\argumento $\times$ \argumento}{nat,nat}{nat}{}
-\tadOperacion{\argumento $<$ \argumento}{nat,nat}{bool}{}
-\tadOperacion{\argumento $\leq$ \argumento}{nat,nat}{bool}{}
-\tadOperacion{$\min$}{nat,nat}{nat}{}
-\tadOperacion{$\max$}{nat,nat}{nat}{}
+\tadOperacion{Distancia}{posición,posición}{nat (origen,destino)}{}
+\tadOperacion{izquierda}{posición}{posición}{}
+\tadOperacion{derecha}{posición}{posición}{}
+\tadOperacion{arriba}{posición}{posición}{}
+\tadOperacion{abajo}{map,posición}{bool}{}
+\tadOperacion{fueraDelMapa}{posición}{posición}{}
+\tadOperacion{posicionesAMenorDistancia}{posición,conj(posición)}{conj(posición)}{}
+\tadOperacion{posicionesAMenorDistanciaAux}{posición,conj(posición)}{conj(posición)}{}
+\tadOperacion{todosALaMismaDistancia}{posición /p,conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
+\tadOperacion{todosALaMismaDistanciaAux}{posición /p,conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
+\tadOperacion{hayUnoAMenorDistancia}{posición /p1,posición /p2,conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
+\tadOperacion{estáArriba?}{posición,posición}{bool}{}
+\tadOperacion{estáAbajo?}{posicion,posición}{bool}{}
+\tadOperacion{estáDerecha?}{posición,posición}{bool}{}
+\tadOperacion{estáIzquierda?}{posición,posición}{bool}{}
+\tadOperacion{estáEnLaPrimeraDiagonal?}{posición,posición}{bool}{}
+\tadOperacion{estáEnLaSegundaDiagonal?}{posición,posición}{bool}{}
+\tadOperacion{estáEnLaTerceraDiagonal?}{posición,posición}{bool}{}
+\tadOperacion{estáEnLaCuartaDiagonal?}{posición,posición}{bool}{}
+
+
+
+
 
 \tadAxiomas[\paratodo{nat}{n, m}]
-\tadAlinearAxiomas{pred(suc($n$))}
-\tadAxioma{$0=0?$}{true}
-\tadAxioma{suc($n$)$=0?$}{false}
+\tadAlinearAxiomas{PosicionesAMenorDistanciaAux(p,ps)}
 
-\tadAxioma{pred(suc($n$))}{$n$}
-
+\tadAxioma{obstaculos(nuevoMapa(al,an,obstaculos))}{obstaculos}
+\tadAxioma{ancho(nuevoMapa(al,an))}{an}
+\tadAxioma{alto(nuevoMapa(al,an))}{an}
 \tadAxioma{$n+m$}{\IF\ $m=0?$ THEN $n$ ELSE suc($n$ $+$ pred($m$)) FI}
 \tadAxioma{$n-m$}{\IF\ $m=0?$ THEN $n$ ELSE pred($n$) $-$ pred($m$) FI}
 \tadAxioma{$n \times m$}{\IF\ $m=0?$ THEN $0$ ELSE $n$ $\times$ pred($m$) $+$ $n$ FI}
-
 \tadAxioma{$n < m$}{$\lnot(m=0?)$ $\yluego$ $(n=0? \oluego\ \text{pred}(n)<\text{pred}(m))$}
-
 \tadAxioma{$n \leq m$}{$n < m \lor n = m$}
-
 \tadAxioma{$\min(n, m)$}{\IF\ $m < n$ THEN $m$ ELSE $n$ FI}
-
 \tadAxioma{$\max(n, m)$}{\IF\ $m < n$ THEN $n$ ELSE $m$ FI}
 
 \end{tad}
@@ -99,30 +109,50 @@
 \section{TAD \tadNombre{Campus}}
 
 \begin{tad}{\tadNombre{Campus}}
-\tadIgualdadObservacional{d}{d'}{dicc($\kappa,\sigma$)}{$(\forall c:\kappa)$(def?($c, d$) $\igobs$ def?($c, d'$) $\yluego$\\ (def?($c, d$) $\impluego$ obtener($c, d$) $\igobs$ obtener($c, d'$)))}
+\tadIgualdadObservacional{}{}{}{}
 
 \tadParametrosFormales{
-    \tadEncabezadoInline{géneros}{clave, significado}
+    \tadEncabezadoInline{}{}
 }
 
-\tadGeneros{dicc(clave, significado)}
-\tadExporta{dicc(clave, significado), generadores, observadores, borrar, claves}
-\tadUsa{\tadNombre{Bool, Nat, Conjunto(clave)}}
+\tadGeneros{camp}
+\tadExporta{}
+\tadUsa{\tadNombre{}}
 
 %notar la importancia de agrupar el ultimo parametro, para la coma
-\tadAlinearFunciones{obtener}{clave,significado,{dicc(clave, significado)}}
+\tadAlinearFunciones{AgentesMasVigilantesAux}{clave,significado,{dicc(clave, significado)}}
 
 \tadObservadores 
-\tadOperacion{def?}{clave,{dicc(clave, significado)}}{bool}{} 
-\tadOperacion{obtener}{clave/c,{dicc(clave, significado)}/d}{significado}{def?($c$, $d$)}
+\tadOperacion{mapa}{camp}{map}{} 
+\tadOperacion{estudiantes}{camp}{conj(posición)}{}
+\tadOperacion{hippies}{camp}{conj(posición)}{}
+\tadOperacion{agentes}{camp}{dicc(posición, agentes) }{}
 
 \tadGeneradores
-\tadOperacion{vacío}{}{dicc(clave, significado)}{}
-\tadOperacion{definir}{clave,significado,{dicc(clave, significado)}}{dicc(clave, significado)}{}
+\tadOperacion{rastrillaje}{map /m, dicc(posición,agente)/a}{camp}{$((p \in claves(a)) \implies 
+(\neg(fueraDelMapa(mapa(c), p))) \land \neg(p \in obstaculos(m)))) \land (\forall p1,p2: posicion) ((p1 \neq p2 \land def?(p1, a) \land def? (p2, a)) \implies (\Pi_1(obtener(p1,a)) \neq \Pi_1(obtener(p2, a)) \land \Pi_2(obtener(p1, a)) = 0 \land \Pi_2(obtener(p2, a)) = 0 \land (\Pi_3(obtener(p1, a)) = 0 \land \Pi_3(obtener(p2, a)) = 0)) $}
+\tadOperacion{entraH}{camp /c, posición /p}{camp}{R1}
+\tadOperacion{entraE}{camp /c, posición /p}{camp}{R1}
+\tadOperacion{mueveH}{camp /c ,posición /p}{camp}{$(p \in hippies(c) $}
+\tadOperacion{mueveE}{camp /c,posición /origen, posición /destino}{camp}{$ (origen \in estudiantes(c) ) \land (\neg (fueraDelMapa(map(c) \times destino))) $}
+\tadOperacion{mueveA}{camp /c, posición /p}{camp}{$ (p \in claves(agentes(c))) \land (\Pi_3 (obtener(p \times agente(c))) < 3)  $}
+
+{$R1:= (1 \leq \Pi_1(p)\leq ancho(m)) \land (\Pi_2(p) = 0 \lor \Pi_2(p) = alto(mapa(c))) \land (\neg(p \in obstaculos(mapa(c)))) \land (\neg(p \in estudiantes(c))) \land (\neg(p \in claves(agentes(c)))) \land (\neg(p \in hippies(c))$}
 
 \tadOtrasOperaciones
-\tadOperacion{borrar}{clave/c,{dicc(clave, significado)}/d}{dicc(clave, significado)}{def?($c$,$d$)}
-\tadOperacion{claves}{{dicc(clave, significado)}}{conj(clave)}{}
+\tadOperacion{cuántosHippies?}{camp}{nat}{}
+\tadOperacion{cuántosEstudiantes?}{camp}{nat}{}
+\tadOperacion{agenteMásVigilante}{camp}{nat}{}
+\tadOperacion{agentesMásVigilantes}{camp,conj(posición)}{conj(posición)}{}
+\tadOperacion{agentesMásVigilantesAux}{camp,conj(posición)}{conj(posición)}{}
+\tadOperacion{todosIgualDeVigilantes}{camp,nat, conj(posición)}{bool}{}
+\tadOperacion{hayUnoMásVigilante}{camp,posición, conj(posición)}{bool}{}
+\tadOperacion{cuántosHippiesCerca?}{camp,posición}{nat}{}
+\tadOperacion{lugarVacío?}{camp,posición}{bool}{}
+\tadOperacion{opcionesDeMovimiento}{camp,posición}{conj(posición)}{}
+\tadOperacion{hayUnoAlLado}{camp /c,posición /p, conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
+\tadOperacion{nuevaPosición}{camp /c,posición /p, conj(posición) /ps}{posición}{$(p \in hippies(c)) \lor (p \in claves(agentes(c)))) \land \neg (\emptyset?(ps))$}
+
 
 \tadAxiomas[\paratodo{dicc(clave, significado)}{d}, \paratodo{clave}{c, k}, \paratodo{significado}{s}]
 \tadAlinearAxiomas{obtener($c$, definir($k$, $s$, $d$))}
