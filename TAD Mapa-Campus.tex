@@ -43,7 +43,7 @@
 
 \end{tad} %no sé cómo borrar el Fin TAD
 
-\begin{tad}{\tadNombre{Agente} es \tadNombre{Tupla(nat $\times$ nat $\times$ nat)}}
+\begin{tad}{\tadNombre{Agente} es \tadNombre{Tupla(nat $\times$ nat $\times$ nat)\footnote{Placa x Capturas x Sanciones}}}
 
 \end{tad}
 
@@ -62,7 +62,7 @@
 \tadOperacion{alto}{map}{nat}{}
 
 \tadGeneradores
-\tadOperacion{nuevoMapa}{nat /al, nat /an, conj(tupla(nat, nat) /obstaculos}{map}{$ (al \geq 1) \land(an \geq 1) \land ((\forall :o\hspace{0,1cm}tupla(nat\hspace{0,1cm} , \hspace{0,1cm}nat)) \hspace{0,1cm} o \in obstaculos \iff 1 \leq \pi_1(o)\leq an \land 1 \leq \pi_2(o)\leq al) $ }
+\tadOperacion{nuevoMapa}{nat /al, nat /an,conj(tupla(nat, nat)/obstaculos}{map}{(al $\geq$ 1) $\land$ (an $\geq$ 1) $\land$ (\paratodo{tupla(nat,nat)}{o}) (o $\in$ obstaculos $\iff$ (1 $\leq$ $\pi_1$(o) $\leq$ an $\land$ \newline 1 $\leq$ $\pi_2$(o) $\leq$ al))}
 
 \tadOtrasOperaciones
 \tadOperacion{Distancia}{posición,posición}{nat (origen,destino)}{}
@@ -73,10 +73,10 @@
 \tadOperacion{FueraDelMapa}{posición}{posición}{}
 \tadOperacion{PosicionesAMenorDistancia}{posición,conj(posición)}{conj(posición)}{}
 \tadOperacion{PosicionesAMenorDistanciaAux}{posición,conj(posición)}{conj(posición)}{}
-\tadOperacion{TodosALaMismaDistancia}{posición /p,conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
+\tadOperacion{TodosALaMismaDistancia}{posición /p,conj(posición) /ps}{bool}{$\neg\emptyset$?(ps)}
 \tadOperacion{TodosALaMismaDistanciaAux}{posición /p,conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
-\tadOperacion{HayUnoAMenorDistancia}{posición /p1,posición /p2,conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
-\tadOperacion{EstáArriba?}{posición,posición}{bool}{}
+\tadOperacion{HayUnoAMenorDistancia}{posición /p1,posición /p2,conj(posición) /ps}{bool}{$\neg\emptyset$?($ps$)}
+\tadOperacion{EstáArriba?\footnotemark}{posición,posición}{bool}{}
 \tadOperacion{EstáAbajo?}{posicion,posición}{bool}{}
 \tadOperacion{EstáALaDerecha?}{posición,posición}{bool}{}
 \tadOperacion{EstáALaIzquierda?}{posición,posición}{bool}{}
@@ -85,6 +85,8 @@
 \tadOperacion{EstáEnLaTercerDiagonal?}{posición,posición}{bool}{}
 \tadOperacion{EstáEnLaCuartaDiagonal?}{posición,posición}{bool}{}
 
+\footnotetext{La primer posición con respecto a la segunda. Arriba es en su misma columna y por encima, abajo en la misma columna pero por debajo. Lo mismo con derecha e izquierda pero con respecto a la fila. La primer diagonal sería el primer cuadrante del mapa, pero tomando como centro la primer posición, y de la misma forma las otras diagonales.}
+
 \tadAxiomas[\paratodo{map}{m}, \paratodo{nat}{an, al, d}, \paratodo{posición}{p, p1, p2}, \paratodo{conj(posición)}{obstáculos, ps}]
 
 \tadAlinearAxiomas{obstaculos(nuevoMapa(al,an,obstaculos))}
@@ -92,13 +94,12 @@
 \tadAxioma{obstaculos(nuevoMapa(al,an,obstaculos))}{obstaculos}
 \tadAxioma{ancho(nuevoMapa(al,an))}{an}
 \tadAxioma{alto(nuevoMapa(al,an))}{an}
-\tadAxioma{Distancia (p1,p2)}{$max(\pi_1(p1),\pi_1(p2))- min(\pi_1(p1),\pi_1(p2))
-$}
-\tadAxioma {Izquierda(p)} {$\langle pred(\pi_1(p)),\pi_2(p) \rangle$}
-\tadAxioma {Derecha(p)} {$\langle suc(\pi_1(p)),\pi_2(p) \rangle$}
-\tadAxioma {Arriba(p)} {$\langle \pi_1(p),pred (\pi_2(p)) \rangle$}
-\tadAxioma {Abajo(p)} {$\langle \pi_1(p), suc(\pi_2(p)) \rangle$}
-\tadAxioma {FueraDelMapa(m,p)} {$\pi_1(p)<1 \lor \pi_2(p)<1 \lor ancho(m)<\pi_1(p) \lor alto(m)<\pi_2(p)$}
+\tadAxioma{Distancia (p1,p2)}{max($\pi_1$(p1), $\pi_1$(p2)) - min($\pi_1$(p1), $\pi_1$(p2))}
+\tadAxioma {Izquierda(p)} {$\langle$ pred($\pi_1$(p)), $\pi_2$(p) $\rangle$}
+\tadAxioma {Derecha(p)} {$\langle$ suc($\pi_1$(p)), $\pi_2$(p) $\rangle$}
+\tadAxioma {Arriba(p)} {$\langle$ $\pi_1$(p), pred ($\pi_2$(p)) $\rangle$}
+\tadAxioma {Abajo(p)} {$\langle$ $\pi_1$(p), suc($\pi_2$(p)) $\rangle$}
+\tadAxioma {FueraDelMapa(m,p)} {$\pi_1$(p) < 1 $\lor$ $\pi_2$(p) < 1 $\lor$ ancho(m) < $\pi_1$(p) $\lor$ alto(m) < $\pi_2$(p)}
 \tadAxioma{PosicionesAMenorDistancia(p,ps)}{\IF\ \#ps > 2 $\yluego$ TodosALaMismaDistancia(p,ps) THEN ps ELSE {\IF \#ps $\leq$ 2 THEN PosicionesAMenorDistanciaAux(p,ps) ELSE {\IF\ Distancia(dameUno(ps),p) < Distancia(dameUno(sinUno(ps)),p) THEN PosicionesAMenorDistancia(p,ps - {dameUno(sinUno(ps))}) ELSE {\IF\ Distancia(dameUno(ps), p) > Distancia(dameUno(sinUno(ps)),p) THEN PosicionesAMenorDistancia(p,sinUno(ps)) ELSE {\IF\ HayUnoAMenorDistancia(p, dameUno(ps),ps) THEN PosicionesAMenorDistancia(p,sinUno(sinUno(ps))) ELSE {dameUno(sinUno(ps))} $\cup$ {dameUno(ps)} $\cup$ PosicionesAMenorDistancia(p,sinUno(sinUno(ps))) FI} FI} FI} FI} FI}
 \tadAxioma {PosicionesAMenorDistanciaAux(p,ps)} {{\IF\ \#ps > 2 THEN {\IF\ TodosALaMismaDistancia(p,ps) THEN ps ELSE {\IF\ Distancia(dameUno(ps), p) < Distancia(dameUno(sinUno(ps)),p) THEN PosicionesAMenorDistancia(p,ps - {dameUno(sinUno(ps))}) ELSE {\IF\ Distancia(dameUno(ps), p) > Distancia(dameUno(sinUno(ps)),p) THEN PosicionesAMenorDistancia(p,sinUno(ps)) ELSE {\IF\ HayUnoAMenorDistancia(p, dameUno(ps),ps) THEN PosicionesAMenorDistancia(p,sinUno(sinUno(ps))) ELSE {dameUno(sinUno(ps))} $\cup$ {dameUno(ps)} $\cup$ PosicionesAMenorDistancia(p,sinUno(sinUno(ps)))FI} FI} FI} FI} ELSE PosicionesAMenorDistanciaAux(p,ps) FI}}
 \tadAxioma{TodosALaMismaDistancia(p,ps)}{TodosALaMismaDistanciaAux(p,Distancia(p,dameUno(ps)),ps)}
@@ -131,15 +132,15 @@ $}
 \tadOperacion{agentes}{camp}{dicc(posición, agente) }{}
 
 \tadGeneradores
-\tadOperacion{rastrillaje}{map /m, dicc(posición,agente)/a}{camp}{$((p \in claves(a)) \implies 
-(\neg(fueraDelMapa(mapa(c), p))) \land \neg(p \in obstaculos(m)))) \land (\forall p1,p2: posicion) ((p1 \neq p2 \land def?(p1, a) \land def? (p2, a)) \implies (\pi_1(obtener(p1,a)) \neq \pi_1(obtener(p2, a)) \land \pi_2(obtener(p1, a)) = 0 \land \pi_2(obtener(p2, a)) = 0 \land (\pi_3(obtener(p1, a)) = 0 \land \pi_3(obtener(p2, a)) = 0)) $}
+\tadOperacion{rastrillaje}{map /m, dicc(posición,agente)/a}{camp}{((p $\in$ claves(a)) $\implies$ 
+($\neg$(fueraDelMapa(mapa(c), p))) $\land$ $\neg$(p $\in$ obstaculos(m)))) $\land$ ($\forall$ p1, p2: posicion) ((p1 $\neq$ p2 $\land$ def?(p1, a) $\land$ def?(p2, a)) $\implies$ ($\pi_1$(obtener(p1,a)) $\neq$ $\pi_1$(obtener(p2, a)) $\land$ $\pi_2$(obtener(p1, a)) = 0 $\land$ $\pi_2$(obtener(p2, a)) = 0 $\land$ ($\pi_3$(obtener(p1, a)) = 0 $\land$ \newline $\pi_3$(obtener(p2, a)) = 0))}
 \tadOperacion{entraH}{camp /c, posición /p}{camp}{R1}
 \tadOperacion{entraE}{camp /c, posición /p}{camp}{R1}
-\tadOperacion{mueveH}{camp /c ,posición /p}{camp}{$(p \in hippies(c) $}
-\tadOperacion{mueveE}{camp /c,posición /origen, posición /destino}{camp}{$ (origen \in estudiantes(c) ) \land (\neg (fueraDelMapa(map(c) \times destino))) $}
-\tadOperacion{mueveA}{camp /c, posición /p}{camp}{$ (p \in claves(agentes(c))) \land (\pi_3 (obtener(p \times agente(c))) < 3)  $}
+\tadOperacion{mueveH}{camp /c ,posición /p}{camp}{p $\in$ hippies(c)}
+\tadOperacion{mueveE}{camp /c,posición /origen, posición /destino}{camp}{(origen $\in$ estudiantes(c)) $\land$ ($\neg$(fueraDelMapa(map(c) $\times$ destino)))}
+\tadOperacion{mueveA}{camp /c, posición /p}{camp}{(p $\in$ claves(agentes(c))) $\land$ ($\pi_3$(obtener(p,agente(c))) < 3)}
 
-{$R1:= (1 \leq \pi_1(p)\leq ancho(m)) \land (\pi_2(p) = 0 \lor \pi_2(p) = alto(mapa(c))) \land (\neg(p \in obstaculos(mapa(c)))) \land (\neg(p \in estudiantes(c))) \land (\neg(p \in claves(agentes(c)))) \land (\neg(p \in hippies(c))$}
+{R1 := 1 $\leq$ $\pi_1$(p) $\leq$ ancho(m) $\land$ ($\pi_2$(p) = 0 $\lor$ $\pi_2$(p) = alto(mapa(c))) $\land$ $\neg$(p $\in$ obstaculos(mapa(c))) $\land$ $\neg$(p $\in$ estudiantes(c)) $\land$ $\neg$(p $\in$ claves(agentes(c))) $\land$ $\neg$(p $\in$ hippies(c))}
 
 \tadOtrasOperaciones
 \tadOperacion{\#hippies}{camp}{nat}{}
@@ -152,9 +153,10 @@ $}
 \tadOperacion{\#hippiesCerca}{camp,posición}{nat}{}
 \tadOperacion{LugarVacío?}{camp,posición}{bool}{}
 \tadOperacion{OpcionesDeMovimiento}{camp,posición}{conj(posición)}{}
-\tadOperacion{HayUnoAlLado}{camp /c,posición /p, conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
-\tadOperacion{NuevaPosición}{camp /c,posición /p, conj(posición) /ps}{posición}{$(p \in hippies(c)) \lor (p \in claves(agentes(c)))) \land \neg (\emptyset?(ps))$}
+\tadOperacion{HayUnoAlLado}{camp /c,posición /p, conj(posición) /ps}{bool}{$\neg \emptyset$?(ps)}
+\tadOperacion{NuevaPosición\footnotemark}{camp /c,posición /p, conj(posición) /ps}{posición}{(p $\in$ hippies(c)) $\lor$ (p $\in$ claves(agentes(c)))) $\land$ $\neg(\emptyset$?(ps))}
 
+\footnotetext{Toma la posición del que se va a mover y el conjunto de posiciones de las personas a las que quiere llegar (hippies en el caso de los agentes, y estudiantes en el caso de los hippies).}
 
 \tadAxiomas[\paratodo{camp}{c}, \paratodo{map}{m}, \paratodo{posición}{p, p1, p2}, \paratodo{conj(posición)}{ps}, \paratodo{dicc(posicion,agente)}{a},\newline \paratodo{nat}{capturas}]
 
@@ -202,7 +204,7 @@ AgenteConPlacaMasChica(c, AgentesMasVigilantes(c, claves(agentes(c))))}
 \tadAlinearAxiomas{0}
 
 %busque bastante y no pude dejarlo bien, al menos habria que hacer que salte de pagina. borré el "EstáEnLaCuartaDiagonal?" porque si no está en ninguna de las otras opciones, entonces está ahí, es el último else >>>>>
-\tadAxioma{NuevaPosición(c,p,ps)}{\leavevmode \newline \IF HayUnoAlLado(c,p,ps) THEN p ELSE {\IF EstáArriba?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF <$\pi_1$(p),$\pi_2$(p) + 1> $\in$ OpcionesDeMovimiento(c,p) THEN <$\pi_1$(p),$\pi_2$(p) + 1> ELSE dameUno(PosicionesAMenorDistancia(dameUno(PosicionesAMenorDistancia(p,ps)),OpcionesDeMovimiento(c,p))) FI} ELSE {\IF EstáAbajo?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF <$\pi_1$(p),$\pi_2$(p) - 1> $\in$ OpcionesDeMovimiento(c,p) THEN <$\pi_1$(p),$\pi_2$(p) - 1> ELSE dameUno(PosicionesAMenorDistancia(dameUno(PosicionesAMenorDistancia(p,ps)),OpcionesDeMo- \newline vimiento(c,p))) FI} ELSE {\IF EstáALaDerecha?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF <$\pi_1$(p) + 1,$\pi_2$(p)> $\in$ OpcionesDeMovimiento(c,p) THEN <$\pi_1$(p) + 1,$\pi_2$(p)> ELSE dameUno(PosicionesAMenorDistancia(dameUno(PosicionesAMenorDistancia(p,ps)),OpcionesDeMo-  \newline vimiento(c,p))) FI} ELSE {\IF EstáALaIzquierda?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF <$\pi_1$(p) - 1,$\pi_2$(p)> $\in$ OpcionesDeMovimiento(c,p) THEN <$\pi_1$(p) - 1,$\pi_2$(p)> ELSE dameUno(PosicionesAMenorDistancia(dameUno(PosicionesAMenorDistancia(p,ps)),OpcionesDeMo- \newline vimiento(c,p))) FI} ELSE {\IF EstáEnLaPrimerDiagonal?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF dameUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>}) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>}) ELSE {\IF dameUno(sinUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>})) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno(sinUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>})) ELSE dameUno(OpcionesDeMovimiento(c,p)) FI} FI} ELSE {\IF 
+\tadAxioma{(c,p,ps)}{\leavevmode \newline \IF HayUnoAlLado(c,p,ps) THEN p ELSE {\IF EstáArriba?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF <$\pi_1$(p),$\pi_2$(p) + 1> $\in$ OpcionesDeMovimiento(c,p) THEN <$\pi_1$(p),$\pi_2$(p) + 1> ELSE dameUno(PosicionesAMenorDistancia(dameUno(PosicionesAMenorDistancia(p,ps)),OpcionesDeMovimiento(c,p))) FI} ELSE {\IF EstáAbajo?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF <$\pi_1$(p),$\pi_2$(p) - 1> $\in$ OpcionesDeMovimiento(c,p) THEN <$\pi_1$(p),$\pi_2$(p) - 1> ELSE dameUno(PosicionesAMenorDistancia(dameUno(PosicionesAMenorDistancia(p,ps)),OpcionesDeMo- \newline vimiento(c,p))) FI} ELSE {\IF EstáALaDerecha?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF <$\pi_1$(p) + 1,$\pi_2$(p)> $\in$ OpcionesDeMovimiento(c,p) THEN <$\pi_1$(p) + 1,$\pi_2$(p)> ELSE dameUno(PosicionesAMenorDistancia(dameUno(PosicionesAMenorDistancia(p,ps)),OpcionesDeMo-  \newline vimiento(c,p))) FI} ELSE {\IF EstáALaIzquierda?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF <$\pi_1$(p) - 1,$\pi_2$(p)> $\in$ OpcionesDeMovimiento(c,p) THEN <$\pi_1$(p) - 1,$\pi_2$(p)> ELSE dameUno(PosicionesAMenorDistancia(dameUno(PosicionesAMenorDistancia(p,ps)),OpcionesDeMo- \newline vimiento(c,p))) FI} ELSE {\IF EstáEnLaPrimerDiagonal?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF dameUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>}) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>}) ELSE {\IF dameUno(sinUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>})) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno(sinUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>})) ELSE dameUno(OpcionesDeMovimiento(c,p)) FI} FI} ELSE {\IF 
 EstáEnLaSegundaDiagonal?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF dameUno({<$\pi_1$(p) - 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>}) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno({<$\pi_1$(p) - 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>}) ELSE {\IF dameUno(sinUno({<$\pi_1$(p) - 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>})) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno(sinUno({<$\pi_1$(p) - 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>})) ELSE dameUno(OpcionesDeMovimiento(c,p)) FI} FI} ELSE {\IF 
 EstáEnLaTercerDiagonal?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF dameUno({<$\pi_1$(p) - 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) - 1>}) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno({<$\pi_1$(p) - 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) - 1>}) ELSE {\IF dameUno(sinUno({<$\pi_1$(p) - 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) - 1>})) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno(sinUno({<$\pi_1$(p) - 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) - 1>})) ELSE dameUno(OpcionesDeMovimiento(c,p)) FI} FI} ELSE {\IF dameUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) - 1>}) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) - 1>}) ELSE {\IF dameUno(sinUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) - 1>})) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno(sinUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) - 1>})) ELSE dameUno(OpcionesDeMovimiento(c,p)) FI} FI} FI} FI} FI} FI} FI} FI} FI} FI}
 
