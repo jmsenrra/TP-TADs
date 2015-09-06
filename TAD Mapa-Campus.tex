@@ -68,7 +68,7 @@
 \tadOperacion{alto}{map}{nat}{}
 
 \tadGeneradores
-\tadOperacion{nuevoMapa}{nat /al, nat /an,conj(tupla(nat, nat)/obstaculos}{map}{$ (al \geq 1) \land(an \geq 1) \land ((\forall :o\hspace{0,1cm}tupla(nat\hspace{0,1cm} , \hspace{0,1cm}nat)) \hspace{0,1cm} o \in obstaculos \iff 1 \leq \Pi_1(o)\leq an \land 1 \leq \Pi_2(o)\leq al) $ }
+\tadOperacion{nuevoMapa}{nat /al, nat /an,conj(tupla(nat, nat)/obstaculos}{map}{$ (al \geq 1) \land(an \geq 1) \land ((\forall :o\hspace{0,1cm}tupla(nat\hspace{0,1cm} , \hspace{0,1cm}nat)) \hspace{0,1cm} o \in obstaculos \iff 1 \leq \pi_1(o)\leq an \land 1 \leq \pi_2(o)\leq al) $ }
 
 \tadOtrasOperaciones
 \tadOperacion{Distancia}{posiciÛn,posiciÛn}{nat (origen,destino)}{}
@@ -98,13 +98,28 @@
 \tadAxioma{obstaculos(nuevoMapa(al,an,obstaculos))}{obstaculos}
 \tadAxioma{ancho(nuevoMapa(al,an))}{an}
 \tadAxioma{alto(nuevoMapa(al,an))}{an}
-\tadAxioma{Distancia ($v_1,v_2$)}{$max(\Pi_1(v_1),\Pi_1(v_2))- min(\Pi_1(v_1),\Pi_1(v_2))
+\tadAxioma{Distancia ($v_1,v_2$)}{$max(\pi_1(v_1),\pi_1(v_2))- min(\pi_1(v_1),\pi_1(v_2))
 $}
-\tadAxioma {Izquierda(p)} {$\langle pred(\Pi_1(p)),\Pi_2(p) \rangle$}
-\tadAxioma {Derecha(p)} {$\langle suc(\Pi_1(p)),\Pi_2(p) \rangle$}
-\tadAxioma {Arriba(p)} {$\langle \Pi_1(p),pred (\Pi_2(p)) \rangle$}
-\tadAxioma {Abajo(p)} {$\langle \Pi_1(p), suc(\Pi_2(p)) \rangle$}
-\tadAxioma {FueraDelMapa(m,p)} {$\Pi_1(p)<1 \lor \Pi_2(p)<1 \lor ancho(m)<\Pi_1(p) \lor alto(m)<\Pi_2(p)$}
+\tadAxioma {Izquierda(p)} {$\langle pred(\pi_1(p)),\pi_2(p) \rangle$}
+\tadAxioma {Derecha(p)} {$\langle suc(\pi_1(p)),\pi_2(p) \rangle$}
+\tadAxioma {Arriba(p)} {$\langle \pi_1(p),pred (\pi_2(p)) \rangle$}
+\tadAxioma {Abajo(p)} {$\langle \pi_1(p), suc(\pi_2(p)) \rangle$}
+\tadAxioma {FueraDelMapa(m,p)} {$\pi_1(p)<1 \lor \pi_2(p)<1 \lor ancho(m)<\pi_1(p) \lor alto(m)<\pi_2(p)$}
+\tadAxioma{PosicionesAMenorDistancia(p,ps)}{\IF\ \#ps > 2 $\yluego$ TodosALaMismaDistancia(p,ps) THEN ps ELSE {\IF \#ps $\leq$ 2 THEN PosicionesAMenorDistanciaAux(p,ps) ELSE {\IF\ Distancia(dameUno(ps),p) < Distancia(dameUno(sinUno(ps)),p) THEN PosicionesAMenorDistancia(p,ps - {dameUno(sinUno(ps))}) ELSE {\IF\ Distancia(dameUno(ps), p) > Distancia(dameUno(sinUno(ps)),p) THEN PosicionesAMenorDistancia(p,sinUno(ps)) ELSE {\IF\ HayUnoAMenorDistancia(p, dameUno(ps),ps) THEN PosicionesAMenorDistancia(p,sinUno(sinUno(ps))) ELSE {dameUno(sinUno(ps))} $\cup$ {dameUno(ps)} $\cup$ PosicionesAMenorDistancia(p,sinUno(sinUno(ps))) FI} FI} FI} FI} FI}
+\tadAxioma {PosicionesAMenorDistanciaAux(p,ps)} {{\IF\ \#ps > 2 THEN {\IF\ TodosALaMismaDistancia(p,ps) THEN ps ELSE {\IF\ Distancia(dameUno(ps), p) < Distancia(dameUno(sinUno(ps)),p) THEN PosicionesAMenorDistancia(p,ps - {dameUno(sinUno(ps))}) ELSE {\IF\ Distancia(dameUno(ps), p) > Distancia(dameUno(sinUno(ps)),p) THEN PosicionesAMenorDistancia(p,sinUno(ps)) ELSE {\IF\ HayUnoAMenorDistancia(p, dameUno(ps),ps) THEN PosicionesAMenorDistancia(p,sinUno(sinUno(ps))) ELSE {dameUno(sinUno(ps))} $\cup$ {dameUno(ps)} $\cup$ PosicionesAMenorDistancia(p,sinUno(sinUno(ps)))FI} FI} FI} FI} ELSE PosicionesAMenorDistanciaAux(p,ps) FI}}
+\tadAxioma{TodosALaMismaDistancia(p,ps)}{TodosALaMismaDistanciaAux(p,Distancia(p,dameUno(ps)),ps)}
+\tadAxioma{TodosALaMismaDistanciaAux(p,d,ps)}{{\IF\ (Distancia(p, dameUno(ps)) = d) y $\neg (\emptyset$?(sinUno(ps))) THEN TodosALaMismaDistanciaAux(p,d,sinUno(ps)) ELSE Distancia(p,dameUno(ps)) = d FI}}
+\tadAxioma{HayUnoAMenorDistancia(p1,p2,ps)}{{\IF\ Distancia(p1,dameUno(ps)) < Distancia(p1,p2) THEN true ELSE {\IF\ $\emptyset$?(sinUno(ps)) THEN false ELSE HayUnoAMenorDistancia(p1,p2,sinUno(ps)) FI} FI}}
+\tadAxioma{Est·Arriba?($\pi_1$,p2)}{$\pi_1$(p1) = $\pi_1$(p2) $\land$ $\pi_2$(p1) > $\pi_2$(p2)}
+\tadAxioma{Est·Abajo?($\pi_1$,p2)}{$\pi_1$(p1) = $\pi_1$(p2) $\land$ $\pi_2$(p1) < $\pi_2$(p2)}
+\tadAxioma{Est·ALaDerecha?($\pi_1$,p2)}{$\pi_1$(p1) > $\pi_1$(p2) $\land$ $\pi_2$(p1) = $\pi_2$(p2)}
+\tadAxioma{Est·ALaIzquierda?($\pi_1$,p2)}{$\pi_1$(p1) < $\pi_1$(p2) $\land$ $\pi_2$(p1) = $\pi_2$(p2)}
+\tadAxioma{Est·EnLaPrimerDiagonal?($\pi_1$,p2)}{$\pi_1$(p1) > $\pi_1$(p2) $\land$ $\pi_2$(p1) > $\pi_2$(p2)}
+\tadAxioma{Est·EnLaSegundaDiagonal?($\pi_1$,p2)}{$\pi_1$(p1) < $\pi_1$(p2) $\land$ $\pi_2$(p1) > $\pi_2$(p2)}
+\tadAxioma{Est·EnLaTerceraDiagonal?($\pi_1$,p2)}{$\pi_1$(p1) < $\pi_1$(p2) $\land$ $\pi_2$(p1) < $\pi_2$(p2)}
+\tadAxioma{Est·EnLaCuartaDiagonal?($\pi_1$,p2)}{$\pi_1$(p1) > $\pi_1$(p2) $\land$ $\pi_2$(p1) < $\pi_2$(p2)}
+
+
 
 \end{tad}
 
@@ -129,14 +144,14 @@ $}
 
 \tadGeneradores
 \tadOperacion{rastrillaje}{map /m, dicc(posiciÛn,agente)/a}{camp}{$((p \in claves(a)) \implies 
-(\neg(fueraDelMapa(mapa(c), p))) \land \neg(p \in obstaculos(m)))) \land (\forall p1,p2: posicion) ((p1 \neq p2 \land def?(p1, a) \land def? (p2, a)) \implies (\Pi_1(obtener(p1,a)) \neq \Pi_1(obtener(p2, a)) \land \Pi_2(obtener(p1, a)) = 0 \land \Pi_2(obtener(p2, a)) = 0 \land (\Pi_3(obtener(p1, a)) = 0 \land \Pi_3(obtener(p2, a)) = 0)) $}
+(\neg(fueraDelMapa(mapa(c), p))) \land \neg(p \in obstaculos(m)))) \land (\forall p1,p2: posicion) ((p1 \neq p2 \land def?(p1, a) \land def? (p2, a)) \implies (\pi_1(obtener(p1,a)) \neq \pi_1(obtener(p2, a)) \land \pi_2(obtener(p1, a)) = 0 \land \pi_2(obtener(p2, a)) = 0 \land (\pi_3(obtener(p1, a)) = 0 \land \pi_3(obtener(p2, a)) = 0)) $}
 \tadOperacion{entraH}{camp /c, posiciÛn /p}{camp}{R1}
 \tadOperacion{entraE}{camp /c, posiciÛn /p}{camp}{R1}
 \tadOperacion{mueveH}{camp /c ,posiciÛn /p}{camp}{$(p \in hippies(c) $}
 \tadOperacion{mueveE}{camp /c,posiciÛn /origen, posiciÛn /destino}{camp}{$ (origen \in estudiantes(c) ) \land (\neg (fueraDelMapa(map(c) \times destino))) $}
-\tadOperacion{mueveA}{camp /c, posiciÛn /p}{camp}{$ (p \in claves(agentes(c))) \land (\Pi_3 (obtener(p \times agente(c))) < 3)  $}
+\tadOperacion{mueveA}{camp /c, posiciÛn /p}{camp}{$ (p \in claves(agentes(c))) \land (\pi_3 (obtener(p \times agente(c))) < 3)  $}
 
-{$R1:= (1 \leq \Pi_1(p)\leq ancho(m)) \land (\Pi_2(p) = 0 \lor \Pi_2(p) = alto(mapa(c))) \land (\neg(p \in obstaculos(mapa(c)))) \land (\neg(p \in estudiantes(c))) \land (\neg(p \in claves(agentes(c)))) \land (\neg(p \in hippies(c))$}
+{$R1:= (1 \leq \pi_1(p)\leq ancho(m)) \land (\pi_2(p) = 0 \lor \pi_2(p) = alto(mapa(c))) \land (\neg(p \in obstaculos(mapa(c)))) \land (\neg(p \in estudiantes(c))) \land (\neg(p \in claves(agentes(c)))) \land (\neg(p \in hippies(c))$}
 
 \tadOtrasOperaciones
 \tadOperacion{\#hippies}{camp}{nat}{}
