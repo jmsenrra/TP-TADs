@@ -70,7 +70,7 @@
 \tadOperacion{alto}{map}{nat}{}
 
 \tadGeneradores
-\tadOperacion{nuevoMapa}{nat /al, nat /an,conj(tupla(nat, nat)/obstaculos}{map}{$ (al \geq 1) \land(an \geq 1) \land ((\forall :o\hspace{0,1cm}tupla(nat\hspace{0,1cm} , \hspace{0,1cm}nat)) \hspace{0,1cm} o \in obstaculos \iff 1 \leq \pi_1(o)\leq an \land 1 \leq \pi_2(o)\leq al) $ }
+\tadOperacion{nuevoMapa}{nat /al, nat /an,conj(tupla(nat, nat)/obstaculos}{map}{$ (al \geq 1) \land(an \geq 1) \land (\forall \hspace{0,1cm} o:\hspace{0,1cm}tupla(nat\hspace{0,1cm} , \hspace{0,1cm}nat)) \hspace{0,1cm} (o \in obstaculos \iff (1 \leq \pi_1(o)\leq an \land 1 \leq \pi_2(o)\leq al)) $ }
 
 \tadOtrasOperaciones
 \tadOperacion{Distancia}{posición,posición}{nat (origen,destino)}{}
@@ -149,11 +149,11 @@ $}
 (\neg(fueraDelMapa(mapa(c), p))) \land \neg(p \in obstaculos(m)))) \land (\forall p1,p2: posicion) ((p1 \neq p2 \land def?(p1, a) \land def? (p2, a)) \implies (\pi_1(obtener(p1,a)) \neq \pi_1(obtener(p2, a)) \land \pi_2(obtener(p1, a)) = 0 \land \pi_2(obtener(p2, a)) = 0 \land (\pi_3(obtener(p1, a)) = 0 \land \pi_3(obtener(p2, a)) = 0)) $}
 \tadOperacion{entraH}{camp /c, posición /p}{camp}{R1}
 \tadOperacion{entraE}{camp /c, posición /p}{camp}{R1}
-\tadOperacion{mueveH}{camp /c ,posición /p}{camp}{$(p \in hippies(c) $}
+\tadOperacion{mueveH}{camp /c ,posición /p}{camp}{$p \in hippies(c) $}
 \tadOperacion{mueveE}{camp /c,posición /origen, posición /destino}{camp}{$ (origen \in estudiantes(c) ) \land (\neg (fueraDelMapa(map(c) \times destino))) $}
 \tadOperacion{mueveA}{camp /c, posición /p}{camp}{$ (p \in claves(agentes(c))) \land (\pi_3 (obtener(p \times agente(c))) < 3)  $}
 
-{$R1:= (1 \leq \pi_1(p)\leq ancho(m)) \land (\pi_2(p) = 0 \lor \pi_2(p) = alto(mapa(c))) \land (\neg(p \in obstaculos(mapa(c)))) \land (\neg(p \in estudiantes(c))) \land (\neg(p \in claves(agentes(c)))) \land (\neg(p \in hippies(c))$}
+{$R1:= 1 \leq \pi_1(p)\leq ancho(m) \land (\pi_2(p) = 0 \lor \pi_2(p) = alto(mapa(c))) \land \neg(p \in obstaculos(mapa(c))) \land \neg(p \in estudiantes(c)) \land \neg(p \in claves(agentes(c))) \land \neg(p \in hippies(c))$}
 
 \tadOtrasOperaciones
 \tadOperacion{\#hippies}{camp}{nat}{}
