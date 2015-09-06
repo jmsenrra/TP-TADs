@@ -11,6 +11,8 @@
 \usepackage[colorlinks=true, linkcolor=blue]{hyperref}
 \usepackage{calc}
 
+\deactivatequoting
+
 \newcommand{\f}[1]{\text{#1}}
 \renewcommand{\paratodo}[2]{$\forall~#2$: #1}
 
@@ -171,8 +173,8 @@ $}
 \tadAxioma{hippies(rastrillaje(m,a))}{$\emptyset$}
 \tadAxioma{hippies(entraH(c,p))}{$\pi_2$(hNuevo(c,p))}
 \tadAxioma{hippies(entraE(c,p))}{$\pi_2$(eNuevo(c,p))}
-\tadAxioma{hippies(mueveH(c,p))}{ $\pi_2$(hMovido(c,p,NuevaPosicion(c,p,estudiantes(c))))}
-\tadAxioma{hippies(mueveE(c,p1,p2))}{pi2(eMovido(c,p1,p2))}
+\tadAxioma{hippies(mueveH(c,p))}{$\pi_2$(hMovido(c,p,NuevaPosicion(c,p,estudiantes(c))))}
+\tadAxioma{hippies(mueveE(c,p1,p2))}{$\pi_2$(eMovido(c,p1,p2))}
 \tadAxioma{hippies(mueveA(c,p))}{ $\pi_2$(aMovido(c,p,NuevaPosicion(c,p,hippies(c))))}
 \tadAxioma{agentes(rastrillaje(m,a))}{a}
 \tadAxioma{agentes(entraH(c,p))}{pi3(hNuevo(c,p))}
@@ -191,7 +193,21 @@ AgenteConPlacaMasChica(c, AgentesMasVigilantes(c, claves(agentes(c))))}
 \tadAxioma{AgenteConPlacaMasChica(c,ps)}{}
 \tadAxioma{\#hippiesCerca(c,p)}{$\beta$(Arriba(p) $\in$ hippies(c)) + $\beta$(Abajo(p) $\in$ hippies(c)) + $\beta$(Derecha(p) $\in$ hippies(c)) + $\beta$(Izquierda(p) $\in$ hippies(c))}
 \tadAxioma{LugarVacÌo?(c,p)}{$\neg$(p $\in$ estudiantes(c)) $\wedge$ $\neg$(p $\in$ hippies(c)) $\wedge$ $\neg$(p $\in$ claves(agentes(c))) $\wedge$ $\neg$(p $\in$ obst·culos(mapa(c)))}
- 
+%estarÌa bueno poner los ifs en una linea, pero no ome d
+\tadAxioma{OpcionesDeMovimiento(c,p)}{({\IF LugarVacÌo?(c,Arriba(p)) $\wedge$ $\neg$(FueraDelMapa(mapa(c),Arriba(p))) THEN {Arriba(p)} ELSE $\emptyset$? FI}) $\cup$ ({\IF LugarVacÌo?(c,Abajo(p)) $\wedge$ $\neg$(FueraDelMapa(mapa(c),Abajo(p))) THEN {Abajo(p)} ELSE $\emptyset$? FI}) $\cup$ ({\IF LugarVacÌo?(c,Derecha(p)) $\wedge$ $\neg$(FueraDelMapa(mapa(c),Derecha(p))) THEN {Derecha(p)} ELSE $\emptyset$? FI}) $\cup$ ({\IF LugarVacÌo?(c,Izquierda(p)) $\wedge$ $\neg$(FueraDelMapa(mapa(c),Izquierda(p))) THEN {Izquierda(p)} ELSE $\emptyset$? FI})}
+\tadAxioma{HayUnoAlLado(c,p,ps)}{\IF \#ps = 1 THEN Distancia(p,dameUno(ps)) = 1 ELSE {\IF Distancia(p,dameUno(ps)) = 1 THEN true ELSE HayUnoAlLado(c,p,sinUno(ps)) FI} FI}
+
+\tadAlinearAxiomas{0}
+
+%busque bastante y no pude dejarlo bien, al menos habria que hacer que salte de pagina. borrÈ el "Est·EnLaCuartaDiagonal?" porque si no est· en ninguna de las otras opciones, entonces est· ahÌ, es el ˙ltimo else >>>>>
+\tadAxioma{NuevaPosiciÛn(c,p,ps)}{\leavevmode \newline \IF HayUnoAlLado(c,p,ps) THEN p ELSE {\IF Est·Arriba?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF <$\pi_1$(p),$\pi_2$(p) + 1> $\in$ OpcionesDeMovimiento(c,p) THEN <$\pi_1$(p),$\pi_2$(p) + 1> ELSE dameUno(PosicionesAMenorDistancia(dameUno(PosicionesAMenorDistancia(p,ps)),OpcionesDeMovimiento(c,p))) FI} ELSE {\IF Est·Abajo?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF <$\pi_1$(p),$\pi_2$(p) - 1> $\in$ OpcionesDeMovimiento(c,p) THEN <$\pi_1$(p),$\pi_2$(p) - 1> ELSE dameUno(PosicionesAMenorDistancia(dameUno(PosicionesAMenorDistancia(p,ps)),OpcionesDeMo- \newline vimiento(c,p))) FI} ELSE {\IF Est·ALaDerecha?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF <$\pi_1$(p) + 1,$\pi_2$(p)> $\in$ OpcionesDeMovimiento(c,p) THEN <$\pi_1$(p) + 1,$\pi_2$(p)> ELSE dameUno(PosicionesAMenorDistancia(dameUno(PosicionesAMenorDistancia(p,ps)),OpcionesDeMo-  \newline vimiento(c,p))) FI} ELSE {\IF Est·ALaIzquierda?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF <$\pi_1$(p) - 1,$\pi_2$(p)> $\in$ OpcionesDeMovimiento(c,p) THEN <$\pi_1$(p) - 1,$\pi_2$(p)> ELSE dameUno(PosicionesAMenorDistancia(dameUno(PosicionesAMenorDistancia(p,ps)),OpcionesDeMo- \newline vimiento(c,p))) FI} ELSE {\IF Est·EnLaPrimerDiagonal?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF dameUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>}) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>}) ELSE {\IF dameUno(sinUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>})) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno(sinUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>})) ELSE dameUno(OpcionesDeMovimiento(c,p)) FI} FI} ELSE {\IF 
+Est·EnLaSegundaDiagonal?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF dameUno({<$\pi_1$(p) - 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>}) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno({<$\pi_1$(p) - 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>}) ELSE {\IF dameUno(sinUno({<$\pi_1$(p) - 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>})) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno(sinUno({<$\pi_1$(p) - 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) + 1>})) ELSE dameUno(OpcionesDeMovimiento(c,p)) FI} FI} ELSE {\IF 
+Est·EnLaTercerDiagonal?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN {\IF dameUno({<$\pi_1$(p) - 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) - 1>}) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno({<$\pi_1$(p) - 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) - 1>}) ELSE {\IF dameUno(sinUno({<$\pi_1$(p) - 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) - 1>})) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno(sinUno({<$\pi_1$(p) - 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) - 1>})) ELSE dameUno(OpcionesDeMovimiento(c,p)) FI} FI} ELSE {\IF dameUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) - 1>}) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) - 1>}) ELSE {\IF dameUno(sinUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) - 1>})) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno(sinUno({<$\pi_1$(p) + 1,$\pi_2$(p)>} $\cup$ {<$\pi_1$(p),$\pi_2$(p) - 1>})) ELSE dameUno(OpcionesDeMovimiento(c,p)) FI} FI} FI} FI} FI} FI} FI} FI} FI} FI}
+
+\tadAlinearAxiomas{TodosIgualDeVigilantes(c,capturas,ps)}
+
+\tadAxioma{a}{a}
+
 
 \end{tad}
 
