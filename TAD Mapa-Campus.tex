@@ -10,14 +10,10 @@
 \usepackage{aed2-symb,aed2-itef,aed2-tad}
 \usepackage[colorlinks=true, linkcolor=blue]{hyperref}
 \usepackage{calc}
-
 \deactivatequoting
-
 \newcommand{\f}[1]{\text{#1}}
 \renewcommand{\paratodo}[2]{$\forall~#2$: #1}
-
 \sloppy
-
 \hypersetup{%
  % Para que el PDF se abra a p·gina completa.
  pdfstartview= {FitH \hypercalcbp{\paperheight-\topmargin-1in-\headheight}},
@@ -25,23 +21,19 @@
  pdfkeywords={TAD Mapa y TAD Campus},
  pdfsubject={TP TADs}
 }
-
 \parskip=5pt % 10pt es el tamaÒo de fuente
-
 % Pongo en 0 la distancia extra entre Ìtemes.
 \let\olditemize\itemize
 \def\itemize{\olditemize\itemsep=0pt}
-
 % Acomodo fancyhdr.
 \pagestyle{fancy}
 \thispagestyle{fancy}
 \addtolength{\headheight}{1pt}
-\lhead{Algoritmos y Estructuras de Datos II}
-\rhead{$2^{\mathrm{er}}$ cuatrimestre de 2015}
+\lhead{Trabajo Pr·ctico de TADs}
+\rhead{Grupo 7}
 \cfoot{\thepage /\pageref{LastPage}}
 \renewcommand{\footrulewidth}{0.4pt}
-
-\author{Grupo x}
+\author{Grupo 7}
 \date{}
 \title{TAD Mapa y TAD Campus}
 
@@ -58,19 +50,19 @@
 
 \begin{tad}{\tadNombre{Mapa}}
 \tadGeneros{map}
-\tadExporta{}
-\tadUsa{\tadNombre{}}
-\tadIgualdadObservacional{}{}{}{}
+\tadExporta{map,observadores, generadores, Distancia, Izquierda, Derecha, Arriba, Abajo, FueraDelMapa, PosicionesAMenorDistancia, Est·Arriba?, Est·Abajo? Est·ALaDerecha?, Est·ALaIzquierda?, Est·EnLaPrimerDiagonal?, Est·EnLaSegundaDiagonal?, Est·EnLaTercerDiagonal?, Est·EnLaCuartaDiagonal?}
+\tadUsa{\tadNombre{Bool}, \tadNombre{Nat}, \tadNombre{Posicion}}
+\tadIgualdadObservacional{m_1}{m_2}{map}{obst·culos($m_1$) \igobs obst·culos($m_2$) $\wedge$ ancho($m_1$) \igobs ancho($m_2$) $\wedge$ alto($m_1$) \igobs ancho($m_2$)}
 
 \tadAlinearFunciones{posicionesAMenorDistanciaAux}{nat /al, nat /an,conj(tupla(nat, nat)/obstaculos}
 
 \tadObservadores
-\tadOperacion{obst·culos}{map}{conj (posiciÛn)}{}
+\tadOperacion{obst·culos}{map}{conj(posiciÛn)}{}
 \tadOperacion{ancho}{map}{nat}{}
 \tadOperacion{alto}{map}{nat}{}
 
 \tadGeneradores
-\tadOperacion{nuevoMapa}{nat /al, nat /an,conj(tupla(nat, nat)/obstaculos}{map}{$ (al \geq 1) \land(an \geq 1) \land ((\forall :o\hspace{0,1cm}tupla(nat\hspace{0,1cm} , \hspace{0,1cm}nat)) \hspace{0,1cm} o \in obstaculos \iff 1 \leq \pi_1(o)\leq an \land 1 \leq \pi_2(o)\leq al) $ }
+\tadOperacion{nuevoMapa}{nat /al, nat /an, conj(tupla(nat, nat) /obstaculos}{map}{$ (al \geq 1) \land(an \geq 1) \land ((\forall :o\hspace{0,1cm}tupla(nat\hspace{0,1cm} , \hspace{0,1cm}nat)) \hspace{0,1cm} o \in obstaculos \iff 1 \leq \pi_1(o)\leq an \land 1 \leq \pi_2(o)\leq al) $ }
 
 \tadOtrasOperaciones
 \tadOperacion{Distancia}{posiciÛn,posiciÛn}{nat (origen,destino)}{}
@@ -93,14 +85,14 @@
 \tadOperacion{Est·EnLaTercerDiagonal?}{posiciÛn,posiciÛn}{bool}{}
 \tadOperacion{Est·EnLaCuartaDiagonal?}{posiciÛn,posiciÛn}{bool}{}
 
-\tadAxiomas[\paratodo{}{}]
+\tadAxiomas[\paratodo{map}{m}, \paratodo{nat}{an, al, d}, \paratodo{posiciÛn}{p, p1, p2}, \paratodo{conj(posiciÛn)}{obst·culos, ps}]
 
 \tadAlinearAxiomas{obstaculos(nuevoMapa(al,an,obstaculos))}
 
 \tadAxioma{obstaculos(nuevoMapa(al,an,obstaculos))}{obstaculos}
 \tadAxioma{ancho(nuevoMapa(al,an))}{an}
 \tadAxioma{alto(nuevoMapa(al,an))}{an}
-\tadAxioma{Distancia ($v_1,v_2$)}{$max(\pi_1(v_1),\pi_1(v_2))- min(\pi_1(v_1),\pi_1(v_2))
+\tadAxioma{Distancia (p1,p2)}{$max(\pi_1(p1),\pi_1(p2))- min(\pi_1(p1),\pi_1(p2))
 $}
 \tadAxioma {Izquierda(p)} {$\langle pred(\pi_1(p)),\pi_2(p) \rangle$}
 \tadAxioma {Derecha(p)} {$\langle suc(\pi_1(p)),\pi_2(p) \rangle$}
@@ -112,29 +104,23 @@ $}
 \tadAxioma{TodosALaMismaDistancia(p,ps)}{TodosALaMismaDistanciaAux(p,Distancia(p,dameUno(ps)),ps)}
 \tadAxioma{TodosALaMismaDistanciaAux(p,d,ps)}{{\IF\ (Distancia(p, dameUno(ps)) = d) y $\neg (\emptyset$?(sinUno(ps))) THEN TodosALaMismaDistanciaAux(p,d,sinUno(ps)) ELSE Distancia(p,dameUno(ps)) = d FI}}
 \tadAxioma{HayUnoAMenorDistancia(p1,p2,ps)}{{\IF\ Distancia(p1,dameUno(ps)) < Distancia(p1,p2) THEN true ELSE {\IF\ $\emptyset$?(sinUno(ps)) THEN false ELSE HayUnoAMenorDistancia(p1,p2,sinUno(ps)) FI} FI}}
-\tadAxioma{Est·Arriba?($\pi_1$,p2)}{$\pi_1$(p1) = $\pi_1$(p2) $\land$ $\pi_2$(p1) > $\pi_2$(p2)}
-\tadAxioma{Est·Abajo?($\pi_1$,p2)}{$\pi_1$(p1) = $\pi_1$(p2) $\land$ $\pi_2$(p1) < $\pi_2$(p2)}
-\tadAxioma{Est·ALaDerecha?($\pi_1$,p2)}{$\pi_1$(p1) > $\pi_1$(p2) $\land$ $\pi_2$(p1) = $\pi_2$(p2)}
-\tadAxioma{Est·ALaIzquierda?($\pi_1$,p2)}{$\pi_1$(p1) < $\pi_1$(p2) $\land$ $\pi_2$(p1) = $\pi_2$(p2)}
-\tadAxioma{Est·EnLaPrimerDiagonal?($\pi_1$,p2)}{$\pi_1$(p1) > $\pi_1$(p2) $\land$ $\pi_2$(p1) > $\pi_2$(p2)}
-\tadAxioma{Est·EnLaSegundaDiagonal?($\pi_1$,p2)}{$\pi_1$(p1) < $\pi_1$(p2) $\land$ $\pi_2$(p1) > $\pi_2$(p2)}
-\tadAxioma{Est·EnLaTerceraDiagonal?($\pi_1$,p2)}{$\pi_1$(p1) < $\pi_1$(p2) $\land$ $\pi_2$(p1) < $\pi_2$(p2)}
-\tadAxioma{Est·EnLaCuartaDiagonal?($\pi_1$,p2)}{$\pi_1$(p1) > $\pi_1$(p2) $\land$ $\pi_2$(p1) < $\pi_2$(p2)}
-
-
+\tadAxioma{Est·Arriba?(p1,p2)}{$\pi_1$(p1) = $\pi_1$(p2) $\land$ $\pi_2$(p1) > $\pi_2$(p2)}
+\tadAxioma{Est·Abajo?(p1,p2)}{$\pi_1$(p1) = $\pi_1$(p2) $\land$ $\pi_2$(p1) < $\pi_2$(p2)}
+\tadAxioma{Est·ALaDerecha?(p1,p2)}{$\pi_1$(p1) > $\pi_1$(p2) $\land$ $\pi_2$(p1) = $\pi_2$(p2)}
+\tadAxioma{Est·ALaIzquierda?(p1,p2)}{$\pi_1$(p1) < $\pi_1$(p2) $\land$ $\pi_2$(p1) = $\pi_2$(p2)}
+\tadAxioma{Est·EnLaPrimerDiagonal?(p1,p2)}{$\pi_1$(p1) > $\pi_1$(p2) $\land$ $\pi_2$(p1) > $\pi_2$(p2)}
+\tadAxioma{Est·EnLaSegundaDiagonal?(p1,p2)}{$\pi_1$(p1) < $\pi_1$(p2) $\land$ $\pi_2$(p1) > $\pi_2$(p2)}
+\tadAxioma{Est·EnLaTerceraDiagonal?(p1,p2)}{$\pi_1$(p1) < $\pi_1$(p2) $\land$ $\pi_2$(p1) < $\pi_2$(p2)}
+\tadAxioma{Est·EnLaCuartaDiagonal?(p1,p2)}{$\pi_1$(p1) > $\pi_1$(p2) $\land$ $\pi_2$(p1) < $\pi_2$(p2)}
 
 \end{tad}
 
 \begin{tad}{\tadNombre{Campus}}
-\tadIgualdadObservacional{}{}{}{}
-
-\tadParametrosFormales{
-    \tadEncabezadoInline{}{}
-}
+\tadIgualdadObservacional{c1}{c2}{campus}{mapa(c1) \igobs mapa(c2) $\wedge$ estudiantes(c1) \igobs estudiantes(c2) $\wedge$ hippies(c1) \igobs hippies(c2) $\wedge$ agentes(c1) \igobs agentes(c2)}
 
 \tadGeneros{camp}
-\tadExporta{}
-\tadUsa{\tadNombre{}}
+\tadExporta{camp, observadores, generadores, \#hippies,  \#estudiantes, AgenteM·sVigilante}
+\tadUsa{\tadNombre{Bool}, \tadNombre{Nat}, \tadNombre{PosiciÛn}, \tadNombre{Agente}, \tadNombre{Mapa}, \tadNombre{Conj(PosiciÛn)}, \tadNombre{Dicc(PosiciÛn,Agente)}}
 
 \tadAlinearFunciones{AgentesMasVigilantesAux}{camp /c,posiciÛn /origen, posiciÛn /destino}
 
@@ -142,7 +128,7 @@ $}
 \tadOperacion{mapa}{camp}{map}{} 
 \tadOperacion{estudiantes}{camp}{conj(posiciÛn)}{}
 \tadOperacion{hippies}{camp}{conj(posiciÛn)}{}
-\tadOperacion{agentes}{camp}{dicc(posiciÛn, agentes) }{}
+\tadOperacion{agentes}{camp}{dicc(posiciÛn, agente) }{}
 
 \tadGeneradores
 \tadOperacion{rastrillaje}{map /m, dicc(posiciÛn,agente)/a}{camp}{$((p \in claves(a)) \implies 
@@ -169,7 +155,8 @@ $}
 \tadOperacion{HayUnoAlLado}{camp /c,posiciÛn /p, conj(posiciÛn) /ps}{bool}{$\neg \emptyset$?($ps$)}
 \tadOperacion{NuevaPosiciÛn}{camp /c,posiciÛn /p, conj(posiciÛn) /ps}{posiciÛn}{$(p \in hippies(c)) \lor (p \in claves(agentes(c)))) \land \neg (\emptyset?(ps))$}
 
-\tadAxiomas[\paratodo{}{}]
+
+\tadAxiomas[\paratodo{camp}{c}, \paratodo{map}{m}, \paratodo{posiciÛn}{p, p1, p2}, \paratodo{conj(posiciÛn)}{ps}, \paratodo{dicc(posicion,agente)}{a},\newline \paratodo{nat}{capturas}]
 
 \tadAlinearAxiomas{TodosIgualDeVigilantes(c,capturas,ps)}
 
