@@ -148,6 +148,9 @@
 \tadOperacion{AgentesMásVigilantesAux}{camp,conj(posición)}{conj(posición)}{}
 \tadOperacion{TodosIgualDeVigilantes}{camp,nat, conj(posición)}{bool}{}
 \tadOperacion{HayUnoMásVigilante}{camp,posición, conj(posición)}{bool}{}
+\tadOperacion{AgenteConPlacaMasChica}{camp, conj(posición)}{Agente}{}
+\tadOperacion{AgenteConPlacaMasChicaAux}{camp, posición, conj(posición)}{Agente}{}
+\tadOperacion{HayUnaPlacaMasChica}{camp, posición, conj(posición)}{bool}{}
 \tadOperacion{\#hippiesCerca}{camp,posición}{nat}{}
 \tadOperacion{LugarVacío?}{camp,posición}{bool}{}
 \tadOperacion{OpcionesDeMovimiento}{camp,posición}{conj(posición)}{}
@@ -186,13 +189,15 @@
 \tadAxioma{agentes(mueveA(c,p))}{ $\pi_3$(aMovido(c,p,NuevaPosicion(c,p,hippies(c))))}
 \tadAxioma{\#hippies(c)}{\#hippies(c)}
 \tadAxioma{\#estudiantes(c)}{\#estudiantes(c)}
-\tadAxioma{AgenteMasVigilante(c)}{ 
-AgenteConPlacaMasChica(c, AgentesMasVigilantes(c, claves(agentes(c))))}
+\tadAxioma{AgenteMasVigilante(c)}{ $\pi_1$(AgenteConPlacaMasChica(c, AgentesMasVigilantes(c, claves(agentes(c)))))}
 \tadAxioma{AgentesMasVigilantes(c,ps)}{\IF \#ps > 2 THEN{\IF TodosIgualDeVigilantes(c,$\pi_2$(obtener(dameUno(ps)),agentes(c)),ps) THEN ps ELSE {\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) < $\pi_2$(obtener(dameUno(sinUno(ps)),agentes(c))) THEN AgentesMasVigilantes(c,ps - {dameUno(ps)}) ELSE {\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) > $\pi_2$(obtener(dameUno(sinUno(ps)),agentes(c))) THEN AgentesMasVigilantes(c,ps - {dameUno(sinUno(ps))}) ELSE {\IF HayUnoMasVigilante(c,dameUno(ps),ps) THEN AgentesMasVigilantes(c,sinUno(sinUno(ps))) ELSE {dameUno(sinUno(ps))} $\cup$ {dameUno(ps)} $\cup$ AgentesMasVigilantes(c,sinUno(sinUno(ps))) FI} FI} FI} FI} ELSE AgentesMasVigilantesAux(c,ps)FI}
 \tadAxioma{AgentesMasVigilantesAux(c,ps)}{\IF \#ps == 1 THEN ps ELSE {\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) > $\pi_2$(obtener(dameUno(sinUno(ps)),agentes(c))) THEN {dameUno(ps)} ELSE {\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) < $\pi_2$(obtener(dameUno(sinUno(ps)),agentes(c))) THEN {dameUno(sinUno(ps))} ELSE ps FI} FI} FI}
 \tadAxioma{TodosIgualDeVigilantes(c,capturas,ps)}{\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) == capturas $\wedge$ $\neg$($\emptyset$?(sinUno(ps))) THEN TodosIgualDeVigilantes(c,capturas,sinUno(ps)) ELSE $\pi_2$(obtener(dameUno(ps),agentes(c))) == capturas FI}
 \tadAxioma{HayUnoMasVigilante(c,p,ps)}{\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) > $\pi_2$(obtener(p,agentes(c))) THEN true ELSE {\IF $\neg$($\emptyset$?(sinUno(ps))) THEN HayUnoMasVigilante(c,p,sinUno(ps)) ELSE false FI} FI}
-\tadAxioma{AgenteConPlacaMasChica(c,ps)}{}
+\tadAxioma{AgenteConPlacaMasChica(c,ps)}{AgenteConPlacaMasChicaAux(c, dameUno(ps), sinUno(ps))}
+\tadAxioma{AgenteConPlacaMasChicaAux(c, p, ps)}{\IF HayUnaPlacaMasChica(c, p, ps) THEN AgenteConPlacaMasChicaAux(c, dameUno(ps), sinUno(ps)) ELSE obtener(p, agentes(c)) FI}
+\tadAxioma{HayUnaPlacaMasChica(c, p, ps)}{\IF \#ps $\leq$ 2 THEN {\IF $\pi_1$(obtener(dameUno(ps), agentes(c))) < $\pi_1$(obtener(p, agentes(c))) THEN true ELSE {\IF $\not$vacio?(sinUno(ps)) THEN HayUnaPlacaMasChica(c, p, sinUno(ps)) ELSE false FI} FI} ELSE false FI}
+
 \tadAxioma{\#hippiesCerca(c,p)}{$\beta$(Arriba(p) $\in$ hippies(c)) + $\beta$(Abajo(p) $\in$ hippies(c)) + $\beta$(Derecha(p) $\in$ hippies(c)) + $\beta$(Izquierda(p) $\in$ hippies(c))}
 \tadAxioma{LugarVacío?(c,p)}{$\neg$(p $\in$ estudiantes(c)) $\wedge$ $\neg$(p $\in$ hippies(c)) $\wedge$ $\neg$(p $\in$ claves(agentes(c))) $\wedge$ $\neg$(p $\in$ obstáculos(mapa(c)))}
 %estaría bueno poner los ifs en una linea, pero no ome d
