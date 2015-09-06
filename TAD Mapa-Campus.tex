@@ -121,7 +121,7 @@
 \tadExporta{camp, observadores, generadores, \#hippies,  \#estudiantes, AgenteMásVigilante}
 \tadUsa{\tadNombre{Bool}, \tadNombre{Nat}, \tadNombre{Posición}, \tadNombre{Agente}, \tadNombre{Mapa}, \tadNombre{Conj(Posición)}, \tadNombre{Dicc(Posición,Agente)}}
 
-\tadAlinearFunciones{AgentesMasVigilantesAux}{camp /c,posición /origen, posición /destino}
+\tadAlinearFunciones{AgenteConPlacaMasChicaAux}{camp /c,posición /origen, posición /destino}
 
 \tadObservadores 
 \tadOperacion{mapa}{camp}{map}{} 
@@ -148,8 +148,8 @@
 \tadOperacion{AgentesMásVigilantesAux}{camp,conj(posición)}{conj(posición)}{}
 \tadOperacion{TodosIgualDeVigilantes}{camp,nat, conj(posición)}{bool}{}
 \tadOperacion{HayUnoMásVigilante}{camp,posición, conj(posición)}{bool}{}
-\tadOperacion{AgenteConPlacaMasChica}{camp, conj(posición)}{Agente}{}
-\tadOperacion{AgenteConPlacaMasChicaAux}{camp, posición, conj(posición)}{Agente}{}
+\tadOperacion{AgenteConPlacaMasChica}{camp, conj(posición)}{agente}{}
+\tadOperacion{AgenteConPlacaMasChicaAux}{camp, posición, conj(posición)}{agente}{}
 \tadOperacion{HayUnaPlacaMasChica}{camp, posición, conj(posición)}{bool}{}
 \tadOperacion{\#hippiesCerca}{camp,posición}{nat}{}
 \tadOperacion{LugarVacío?}{camp,posición}{bool}{}
