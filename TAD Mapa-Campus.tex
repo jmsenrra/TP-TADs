@@ -41,14 +41,13 @@
 
 \noindent \textbf{TAD} \textsc {Posición} es \textsc {Tupla(nat $\times$ nat)}
 
+\noindent \textbf{TAD}  {\tadNombre{Agente} es \tadNombre{Tupla(nat $\times$ nat $\times$ nat)\footnotemark}}
 
-\noindent \textbf{TAD}  {\tadNombre{Agente} es \tadNombre{Tupla(nat $\times$ nat $\times$ nat)\footnote{Placa x Capturas x Sanciones}}}
-
-
+\footnotetext[1]{Placa x Capturas x Sanciones}
 
 \begin{tad}{\tadNombre{Mapa}}
 \tadGeneros{map}
-\tadExporta{map,observadores, generadores, Distancia, Izquierda, Derecha, Arriba, Abajo, FueraDelMapa, PosicionesAMenorDistancia, EstáArriba?, EstáAbajo? EstáALaDerecha?, EstáALaIzquierda?, EstáEnLaPrimerDiagonal?, EstáEnLaSegundaDiagonal?, EstáEnLaTercerDiagonal?}
+\tadExporta{map,observadores, generadores, Distancia, Izquierda, Derecha, Arriba, Abajo, FueraDelMapa, PosicionesAMenorDistancia, EstáArriba?, EstáAbajo? EstáALaDerecha?, EstáALaIzquierda?, EstáEnLaPrimerDiagonal?, EstáEnLaSegundaDiagonal?, EstáEnLaTercerDiagonal?, Tocando}
 \tadUsa{\tadNombre{Bool}, \tadNombre{Nat}, \tadNombre{Posicion}}
 \tadIgualdadObservacional{m_1}{m_2}{map}{obstáculos($m_1$) \igobs obstáculos($m_2$) $\wedge$ ancho($m_1$) \igobs ancho($m_2$) $\wedge$ alto($m_1$) \igobs ancho($m_2$)}
 
@@ -67,7 +66,7 @@
 \tadOperacion{Izquierda}{posición}{posición}{}
 \tadOperacion{Derecha}{posición}{posición}{}
 \tadOperacion{Arriba}{posición}{posición}{}
-\tadOperacion{Abajo}{map,posición}{bool}{}
+\tadOperacion{Abajo}{posición}{posición}{}
 \tadOperacion{FueraDelMapa}{posición}{posición}{}
 \tadOperacion{PosicionesAMenorDistancia}{posición,conj(posición)}{conj(posición)}{}
 \tadOperacion{PosicionesAMenorDistanciaAux}{posición,conj(posición)}{conj(posición)}{}
@@ -75,18 +74,18 @@
 \tadOperacion{TodosALaMismaDistanciaAux}{posición /p,conj(posición) /ps}{bool}{$\neg \emptyset$?($ps$)}
 \tadOperacion{HayUnoAMenorDistancia}{posición /p1,posición /p2,conj(posición) /ps}{bool}{$\neg\emptyset$?($ps$)}
 \tadOperacion{EstáArriba?\footnotemark}{posición,posición}{bool}{}
-\footnotetext{La primer posición con respecto a la segunda. Arriba es en su misma columna y por encima, abajo en la misma columna pero por debajo. Lo mismo con derecha e izquierda pero con respecto a la fila. La primer diagonal sería el primer cuadrante del mapa, pero tomando como centro la primer posición, y de la misma forma las otras diagonales.}
+
+\footnotetext[2]{La primer posición con respecto a la segunda. Arriba es en su misma columna y por encima, abajo en la misma columna pero por debajo. Lo mismo con derecha e izquierda pero con respecto a la fila. La primer diagonal sería el primer cuadrante del mapa, pero tomando como centro la primer posición, y de la misma forma las otras diagonales.}
+
 \tadOperacion{EstáAbajo?}{posicion,posición}{bool}{}
 \tadOperacion{EstáALaDerecha?}{posición,posición}{bool}{}
 \tadOperacion{EstáALaIzquierda?}{posición,posición}{bool}{}
 \tadOperacion{EstáEnLaPrimerDiagonal?}{posición,posición}{bool}{}
 \tadOperacion{EstáEnLaSegundaDiagonal?}{posición,posición}{bool}{}
 \tadOperacion{EstáEnLaTercerDiagonal?}{posición,posición}{bool}{}
-\tadOperacion{EstáEnLaCuartaDiagonal?}{posición,posición}{bool}{}
-\tadOperacion{tocando}{posición /p, conj(posición) /ps}{conj(posición)}{}
-*da las posiciones a la derecha, izquierda, arriba y abajo de p que estan en el conjunto ps
+\tadOperacion{Tocando\footnotemark}{posición /p, conj(posición) /ps}{conj(posición)}{}
 
-\footnotetext{La primer posición con respecto a la segunda. Arriba es en su misma columna y por encima, abajo en la misma columna pero por debajo. Lo mismo con derecha e izquierda pero con respecto a la fila. La primer diagonal sería el primer cuadrante del mapa, pero tomando como centro la primer posición, y de la misma forma las otras diagonales.}
+\footnotetext[3]{Da las posiciones a la derecha, a la izquierda, arriba y abajo de p que estan en el conjunto ps.}
 
 \tadAxiomas[\paratodo{map}{m}, \paratodo{nat}{an, al, d}, \paratodo{posición}{p, p1, p2}, \paratodo{conj(posición)}{obstáculos, ps}]
 
@@ -95,14 +94,14 @@
 \tadAxioma{obstaculos(nuevoMapa(al,an,obstaculos))}{obstaculos}
 \tadAxioma{ancho(nuevoMapa(al,an))}{an}
 \tadAxioma{alto(nuevoMapa(al,an))}{an}
-\tadAxioma{Distancia (p1,p2)}{max($\pi_1$(p1), $\pi_1$(p2)) - min($\pi_1$(p1), $\pi_1$(p2))}
+\tadAxioma{Distancia (p1,p2)}{max($\pi_1$(p1), $\pi_1$(p2)) - min($\pi_1$(p1), $\pi_1$(p2)) + max($\pi_2$(p1), $\pi_2$(p2)) - min ($\pi_2$(p1),$\pi_2$(p2))}
 \tadAxioma {Izquierda(p)} {$\langle$ pred($\pi_1$(p)), $\pi_2$(p) $\rangle$}
 \tadAxioma {Derecha(p)} {$\langle$ suc($\pi_1$(p)), $\pi_2$(p) $\rangle$}
-\tadAxioma {Arriba(p)} {$\langle$ $\pi_1$(p), pred ($\pi_2$(p)) $\rangle$}
-\tadAxioma {Abajo(p)} {$\langle$ $\pi_1$(p), suc($\pi_2$(p)) $\rangle$}
+\tadAxioma {Arriba(p)} {$\langle$ $\pi_1$(p), suc($\pi_2$(p)) $\rangle$}
+\tadAxioma {Abajo(p)} {$\langle$ $\pi_1$(p), pred($\pi_2$(p)) $\rangle$}
 \tadAxioma {FueraDelMapa(m,p)} {$\pi_1$(p) < 1 $\lor$ $\pi_2$(p) < 1 $\lor$ ancho(m) < $\pi_1$(p) $\lor$ alto(m) < $\pi_2$(p)}
-\tadAxioma{PosicionesAMenorDistancia(p,ps)}{\IF\ \#ps > 2 $\yluego$ TodosALaMismaDistancia(p,ps) THEN ps ELSE {\IF \#ps $\leq$ 2 THEN PosicionesAMenorDistanciaAux(p,ps) ELSE {\IF\ Distancia(dameUno(ps),p) < Distancia(dameUno(sinUno(ps)),p) THEN PosicionesAMenorDistancia(p,ps - {dameUno(sinUno(ps))}) ELSE {\IF\ Distancia(dameUno(ps), p) > Distancia(dameUno(sinUno(ps)),p) THEN PosicionesAMenorDistancia(p,sinUno(ps)) ELSE {\IF\ HayUnoAMenorDistancia(p, dameUno(ps),ps) THEN PosicionesAMenorDistancia(p,sinUno(sinUno(ps))) ELSE {dameUno(sinUno(ps))} $\cup$ {dameUno(ps)} $\cup$ PosicionesAMenorDistancia(p,sinUno(sinUno(ps))) FI} FI} FI} FI} FI}
-\tadAxioma {PosicionesAMenorDistanciaAux(p,ps)} {{\IF\ \#ps > 2 THEN {\IF\ TodosALaMismaDistancia(p,ps) THEN ps ELSE {\IF\ Distancia(dameUno(ps), p) < Distancia(dameUno(sinUno(ps)),p) THEN PosicionesAMenorDistancia(p,ps - {dameUno(sinUno(ps))}) ELSE {\IF\ Distancia(dameUno(ps), p) > Distancia(dameUno(sinUno(ps)),p) THEN PosicionesAMenorDistancia(p,sinUno(ps)) ELSE {\IF\ HayUnoAMenorDistancia(p, dameUno(ps),ps) THEN PosicionesAMenorDistancia(p,sinUno(sinUno(ps))) ELSE {dameUno(sinUno(ps))} $\cup$ {dameUno(ps)} $\cup$ PosicionesAMenorDistancia(p,sinUno(sinUno(ps)))FI} FI} FI} FI} ELSE PosicionesAMenorDistanciaAux(p,ps) FI}}
+\tadAxioma{PosicionesAMenorDistancia(p,ps)}{\IF\ \#ps > 2 THEN {\IF\ TodosALaMismaDistancia(p,ps) THEN ps ELSE {\IF\ Distancia(dameUno(ps), p) < Distancia(dameUno(sinUno(ps)),p) THEN PosicionesAMenorDistancia(p,ps - {dameUno(sinUno(ps))}) ELSE {\IF\ Distancia(dameUno(ps), p) > Distancia(dameUno(sinUno(ps)),p) THEN PosicionesAMenorDistancia(p,sinUno(ps)) ELSE {\IF\ HayUnoAMenorDistancia(p, dameUno(ps),ps) THEN PosicionesAMenorDistancia(p,sinUno(sinUno(ps))) ELSE {dameUno(sinUno(ps))} $\cup$ {dameUno(ps)} $\cup$ PosicionesAMenorDistancia(p,sinUno(sinUno(ps)))FI} FI} FI} FI} ELSE PosicionesAMenorDistanciaAux(p,ps) FI}
+\tadAxioma {PosicionesAMenorDistanciaAux(p,ps)}{\IF \#ps = 2 THEN ({\IF Distancia(p,dameUno(ps)) < Distancia(p,dameUno(sinUno(ps))) THEN {dameUno(ps)} ELSE {\IF Distancia(p,dameUno(ps)) > Distancia(p,dameUno(sinUno(ps))) THEN {dameUno(sinUno(ps))} ELSE ps FI} FI}) ELSE ps FI}
 \tadAxioma{TodosALaMismaDistancia(p,ps)}{TodosALaMismaDistanciaAux(p,Distancia(p,dameUno(ps)),ps)}
 \tadAxioma{TodosALaMismaDistanciaAux(p,d,ps)}{{\IF\ (Distancia(p, dameUno(ps)) = d) y $\neg (\emptyset$?(sinUno(ps))) THEN TodosALaMismaDistanciaAux(p,d,sinUno(ps)) ELSE Distancia(p,dameUno(ps)) = d FI}}
 \tadAxioma{HayUnoAMenorDistancia(p1,p2,ps)}{{\IF\ Distancia(p1,dameUno(ps)) < Distancia(p1,p2) THEN true ELSE {\IF\ $\emptyset$?(sinUno(ps)) THEN false ELSE HayUnoAMenorDistancia(p1,p2,sinUno(ps)) FI} FI}}
@@ -159,7 +158,9 @@ R1 := 1 $\leq$ $\pi_1$(p) $\leq$ ancho(m) $\land$ ($\pi_2$(p) = 0 $\lor$ $\pi_2$
 \tadOperacion{OpcionesDeMovimiento}{camp,posición}{conj(posición)}{}
 \tadOperacion{HayUnoAlLado}{camp /c,posición /p, conj(posición) /ps}{bool}{$\neg \emptyset$?(ps)}
 \tadOperacion{NuevaPosición\footnotemark}{camp /c,posición /p, conj(posición) /ps}{posición}{R2}
-\footnotetext{Toma la posición del que se va a mover y el conjunto de posiciones de las personas a las que quiere llegar (hippies en el caso de los agentes, y estudiantes en el caso de los hippies).}
+
+\footnotetext[4]{Toma la posición del que se va a mover y el conjunto de posiciones de las personas a las que quiere llegar (hippies en el caso de los agentes, y estudiantes en el caso de los hippies).}
+
 \tadOperacion{NuevaPosicionArriba}{camp /c, posicion /p, conj(posicion) /ps}{posición}{R2}
 \tadOperacion{NuevaPosicionAbajo}{camp /c, posicion /p, conj(posicion) /ps}{posición}{R2}
 \tadOperacion{NuevaPosicionALaDerecha}{camp /c, posicion /p, conj(posicion) /ps}{posición}{R2}
@@ -178,39 +179,23 @@ R1 := 1 $\leq$ $\pi_1$(p) $\leq$ ancho(m) $\land$ ($\pi_2$(p) = 0 $\lor$ $\pi_2$
 \tadOperacion{posPrimera}{conj(posición) /ps}{posición}{$\neg0?(\#ps)$}
 \tadOperacion{posSiguientes}{posición /p, conj(posición) /ps}{conj(posición)}{}
 \tadOperacion{siguiente}{posición /p, conj(posición) /ps}{posición}{}
-\tadOperacion{convertirEnHippiesR}{posición /p, conj(posición) /estudiantes, conj(posición) /hippies}{tupla(conj(posición), conj(posición))}{}
-*devuelve: tupla(conj(posición), conj(posición)) \newline
-*devuelve estudiantes y hippies
-\tadOperacion{convertirEnEstudiantesR}{posición /p, conj(posición) /estudiantes, conj(posición) /hippies, conj(posición) /obstáculos}{tupla(conj(posición), conj(posición))}{}
-*devuelve: tupla(conj(posición), conj(posición)) \newline
-*devuelve estudiantes y hippies
-\tadOperacion{capturarR}{posición /p, conj(posición) /estudiantes, conj(posición) /hippies, dicc(posición,agente) agentes, conj(posición) /obstaculos}{tupla(conj(posición),conj(posición),dicc(posición,agente))}{}
-*devuelve: tupla(conj(posición),conj(posición),dicc(posición,agente)) \newline
-*devuelve estudiantes, hippies y agentes
-\tadOperacion{capturar}{tupla(conj(posición),conj(posición)) /tuplaEstudiantesYHippies, dicc(posición,agente) /agentes, conj(posición) /obstaculos}{tupla(conj(posición),conj(posición),dicc(posición,agente))}{}
-*devuelve: tupla(conj(posición),conj(posición),dicc(posición,agente)) \newline
-*devuelve estudiantes, hippies y agentes
-\tadOperacion{convertirEnEstudiantes}{tupla(conj(posición),conj(posición)) /tuplaEstudiantesYHippies, conj(posición) /obstaculos}{tupla(conj(posición),conj(posición))}{}
-*devuelve: tupla(conj(posición), conj(posición)) \newline
-*devuelve estudiantes y hippies
+
+\tadAlinearFunciones{}{posición p x conj(posicion) estudiantes}
+
+\tadOperacion{convertirEnHippiesR\footnotemark[5]}{posición /p, conj(posición) /estudiantes, conj(posición) /hippies}{tupla(conj(posición), conj(posición))}{}
+\tadOperacion{convertirEnEstudiantesR\footnotemark[5]}{posición /p, conj(posición) /estudiantes, conj(posición) /hippies, conj(posición) /obstáculos}{tupla(conj(posición), conj(posición))}{}
+\tadOperacion{capturarR\footnotemark[6]}{posición /p, conj(posición) /estudiantes, conj(posición) /hippies, dicc(posición,agente) agentes, conj(posición) /obstaculos}{tupla(conj(posición),conj(posición),dicc(posición,agente))}{}
+\tadOperacion{capturar\footnotemark[6]}{tupla(conj(posición),conj(posición)) /tuplaEstudiantesYHippies, dicc(posición,agente) /agentes, conj(posición) /obstaculos}{tupla(conj(posición),conj(posición),dicc(posición,agente))}{}
+\tadOperacion{convertirEnEstudiantes\footnotemark[5]}{tupla(conj(posición),conj(posición)) /tuplaEstudiantesYHippies, conj(posición) /obstaculos}{tupla(conj(posición),conj(posición))}{}
 \tadOperacion{convertirEnHippies}{conj(posición) /estudiantes, conj(posición) hippies}{tupla(conj(posición),conj(posición))}{}
-*devuelve: tupla(conj(posición), conj(posición)) \newline
-*devuelve estudiantes y hippies
-\tadOperacion{eNuevo}{campus /c, posición p}{ tupla(conj(posición),conj(posición),dicc(posición,agente))}{$(\pi_2(p) = 1 \vee \pi_2(p) = alto(mapa(c))) \wedge 1 \leq \pi_1(p) \wedge \pi_1(p) \leq ancho(mapa(c)) \wedge p \notin obstaculos(mapa(c)) \wedge p \notin estudiantes(c) \wedge p \notin hippies(c) \wedge p \notin claves(agentes(c))$}
-*devuelve: tupla(conj(posición),conj(posición),dicc(posición,agente)) \newline
-*devuelve estudiantes, hippies y agentes
-\tadOperacion{hNuevo}{campus /c, posición p}{ tupla(conj(posición),conj(posición),dicc(posición,agente))}{$(\pi_2(p) = 1 \vee \pi_2(p) = alto(mapa(c))) \wedge 1 \leq \pi_1(p) \wedge \pi_1(p) \leq ancho(mapa(c)) \wedge p \notin obstaculos(mapa(c)) \wedge p \notin estudiantes(c) \wedge p \notin hippies(c) \wedge p \notin claves(agentes(c))$}
-*devuelve: tupla(conj(posición),conj(posición),dicc(posición,agente)) \newline
-*devuelve estudiantes, hippies y agentes
-\tadOperacion{eMovido}{campus /c, posición /p1, posición /p2}{ tupla(conj(posición),conj(posición),dicc(posición,agente))}{$1 \leq \pi_1(p2) \wedge \pi_1(p2) \leq ancho(mapa(c)) \wedge 1 \leq \pi_2(p2) \wedge \pi_2(p2) \leq alto(mapa(c)) \wedge p2 \notin obstaculos(mapa(c)) \wedge p2 \notin estudiantes(c) \wedge p2 \notin hippies(c) \wedge p2 \notin claves(agentes(c)) \wedge p1 \in estudiantes(c)$}
-*devuelve: tupla(conj(posición),conj(posición),dicc(posición,agente)) \newline
-*devuelve estudiantes, hippies y agentes
-\tadOperacion{hMovido}{campus /c, posición /p1, posición /p2}{tupla(conj(posición),conj(posición),dicc(posición,agente))}{$1 \leq \pi_1(p2) \wedge \pi_1(p2) \leq ancho(mapa(c)) \wedge 1 \leq \pi_2(p2) \wedge \pi_2(p2) \leq alto(mapa(c)) \wedge p2 \notin obstaculos(mapa(c)) \wedge p2 \notin estudiantes(c) \wedge p2 \notin hippies(c) \wedge p2 \notin claves(agentes(c)) \wedge p1 \in hippies(c)$}
-*devuelve: tupla(conj(posición),conj(posición),dicc(posición,agente)) \newline
-*devuelve estudiantes, hippies y agentes
-\tadOperacion{aMovido}{campus /c, posición /p1, posición /p2}{tupla(conj(posición),conj(posición),dicc(posición,agente))}{$1 \leq \pi_1(p2) \wedge \pi_1(p2) \leq ancho(mapa(c)) \wedge 1 \leq \pi_2(p2) \wedge \pi_2(p2) \leq alto(mapa(c)) \wedge p2 \notin obstaculos(mapa(c)) \wedge p2 \notin estudiantes(c) \wedge p2 \notin hippies(c) \wedge p2 \notin claves(agentes(c)) \wedge p1 \in claves(agentes((c)))$}
-*devuelve: tupla(conj(posición),conj(posición),dicc(posición,agente)) \newline
-*devuelve estudiantes, hippies y agentes
+\tadOperacion{eNuevo\footnotemark[6]}{campus /c, posición p}{ tupla(conj(posición),conj(posición),dicc(posición,agente))}{$(\pi_2(p) = 1 \vee \pi_2(p) = alto(mapa(c))) \wedge 1 \leq \pi_1(p) \wedge \pi_1(p) \leq ancho(mapa(c)) \wedge p \notin obstaculos(mapa(c)) \wedge p \notin estudiantes(c) \wedge p \notin hippies(c) \wedge p \notin claves(agentes(c))$}
+\tadOperacion{hNuevo\footnotemark[6]}{campus /c, posición p}{ tupla(conj(posición),conj(posición),dicc(posición,agente))}{$(\pi_2(p) = 1 \vee \pi_2(p) = alto(mapa(c))) \wedge 1 \leq \pi_1(p) \wedge \pi_1(p) \leq ancho(mapa(c)) \wedge p \notin obstaculos(mapa(c)) \wedge p \notin estudiantes(c) \wedge p \notin hippies(c) \wedge p \notin claves(agentes(c))$}
+\tadOperacion{eMovido\footnotemark[6]}{campus /c, posición /p1, posición /p2}{ tupla(conj(posición),conj(posición),dicc(posición,agente))}{$1 \leq \pi_1(p2) \wedge \pi_1(p2) \leq ancho(mapa(c)) \wedge 1 \leq \pi_2(p2) \wedge \pi_2(p2) \leq alto(mapa(c)) \wedge p2 \notin obstaculos(mapa(c)) \wedge p2 \notin estudiantes(c) \wedge p2 \notin hippies(c) \wedge p2 \notin claves(agentes(c)) \wedge p1 \in estudiantes(c)$}
+\tadOperacion{hMovido\footnotemark[6]}{campus /c, posición /p1, posición /p2}{tupla(conj(posición),conj(posición),dicc(posición,agente))}{$1 \leq \pi_1(p2) \wedge \pi_1(p2) \leq ancho(mapa(c)) \wedge 1 \leq \pi_2(p2) \wedge \pi_2(p2) \leq alto(mapa(c)) \wedge p2 \notin obstaculos(mapa(c)) \wedge p2 \notin estudiantes(c) \wedge p2 \notin hippies(c) \wedge p2 \notin claves(agentes(c)) \wedge p1 \in hippies(c)$}
+\tadOperacion{aMovido\footnotemark[6]}{campus /c, posición /p1, posición /p2}{tupla(conj(posición),conj(posición),dicc(posición,agente))}{$1 \leq \pi_1(p2) \wedge \pi_1(p2) \leq ancho(mapa(c)) \wedge 1 \leq \pi_2(p2) \wedge \pi_2(p2) \leq alto(mapa(c)) \wedge p2 \notin obstaculos(mapa(c)) \wedge p2 \notin estudiantes(c) \wedge p2 \notin hippies(c) \wedge p2 \notin claves(agentes(c)) \wedge p1 \in claves(agentes((c)))$}
+
+\footnotetext[5]{Devuelve una tupla que tiene en su primer lugar un conjunto de posiciones que pertenece a estudiantes, y en su segundo lugar uno que pertenece a hippies.}
+\footnotetext[6]{Devuelve una tupla que tiene en su primer lugar un conjunto de posiciones que pertenece a estudiantes, en su segundo lugar uno que pertenece a hippies, y por ultimo un diccionario de agentes.}
 
 R2 := (p $\in$ hippies(c)) $\lor$ (p $\in$ claves(agentes(c)))) $\land$ $\neg(\emptyset$?(ps))
 
@@ -246,7 +231,7 @@ R2 := (p $\in$ hippies(c)) $\lor$ (p $\in$ claves(agentes(c)))) $\land$ $\neg(\e
 \tadAxioma{\#estudiantes(c)}{\#estudiantes(c)}
 \tadAxioma{AgenteMasVigilante(c)}{ $\pi_1$(AgenteConPlacaMasChica(c, AgentesMasVigilantes(c, claves(agentes(c)))))}
 \tadAxioma{AgentesMasVigilantes(c,ps)}{\IF \#ps > 2 THEN{\IF TodosIgualDeVigilantes(c,$\pi_2$(obtener(dameUno(ps)),agentes(c)) \newline ,ps) THEN ps ELSE {\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) < $\pi_2$(obtener(dameUno(sinUno(ps)),agentes(c))) THEN AgentesMasVigilantes(c,ps - {dameUno(ps)}) ELSE {\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) > $\pi_2$(obtener(dameUno(sinUno(ps)),agentes(c))) THEN AgentesMasVigilantes(c,ps - {dameUno(sinUno(ps))}) ELSE {\IF HayUnoMasVigilante(c,dameUno(ps),ps) THEN AgentesMasVigilantes(c,sinUno(sinUno(ps))) ELSE {dameUno(sinUno(ps))} $\cup$ {dameUno(ps)} $\cup$ AgentesMasVigilantes(c,sinUno(sinUno(ps))) FI} FI} FI} FI} ELSE AgentesMasVigilantesAux(c,ps)FI}
-\tadAxioma{AgentesMasVigilantesAux(c,ps)}{\IF \#ps == 1 THEN ps ELSE {\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) > $\pi_2$(obtener(dameUno(sinUno(ps)),agentes(c))) THEN {dameUno(ps)} ELSE {\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) < $\pi_2$(obtener(dameUno(sinUno(ps)),agentes(c))) THEN {dameUno(sinUno(ps))} ELSE ps FI} FI} FI}
+\tadAxioma{AgentesMasVigilantesAux(c,ps)}{\IF \#ps = 1 THEN ps ELSE {\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) > $\pi_2$(obtener(dameUno(sinUno(ps)),agentes(c))) THEN {dameUno(ps)} ELSE {\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) < $\pi_2$(obtener(dameUno(sinUno(ps)),agentes(c))) THEN {dameUno(sinUno(ps))} ELSE ps FI} FI} FI}
 \tadAxioma{TodosIgualDeVigilantes(c,capturas,ps)}{\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) == capturas $\wedge$ $\neg$($\emptyset$?(sinUno(ps))) THEN TodosIgualDeVigilantes(c,capturas,sinUno(ps)) ELSE $\pi_2$(obtener(dameUno(ps),agentes(c))) == capturas FI}
 \tadAxioma{HayUnoMasVigilante(c,p,ps)}{\IF $\pi_2$(obtener(dameUno(ps),agentes(c))) > $\pi_2$(obtener(p,agentes(c))) THEN true ELSE {\IF $\neg$($\emptyset$?(sinUno(ps))) THEN HayUnoMasVigilante(c,p,sinUno(ps)) ELSE false FI} FI}
 \tadAxioma{AgenteConPlacaMasChica(c,ps)}{AgenteConPlacaMasChicaAux(c, dameUno(ps), sinUno(ps))}
@@ -257,10 +242,12 @@ R2 := (p $\in$ hippies(c)) $\lor$ (p $\in$ claves(agentes(c)))) $\land$ $\neg(\e
 %estaría bueno poner los ifs en una linea, pero no ome d
 \tadAxioma{OpcionesDeMovimiento(c,p)}{({\IF LugarVacío?(c,Arriba(p)) $\wedge$ $\neg$(FueraDelMapa(mapa(c),Arriba(p))) THEN {Arriba(p)} ELSE $\emptyset$? FI}) $\cup$ ({\IF LugarVacío?(c,Abajo(p)) $\wedge$ $\neg$(FueraDelMapa(mapa(c),Abajo(p))) THEN {Abajo(p)} ELSE $\emptyset$? FI}) $\cup$ ({\IF LugarVacío?(c,Derecha(p)) $\wedge$ $\neg$(FueraDelMapa(mapa(c),Derecha(p))) THEN {Derecha(p)} ELSE $\emptyset$? FI}) $\cup$ ({\IF LugarVacío?(c,Izquierda(p)) $\wedge$ $\neg$(FueraDelMapa(mapa(c),Izquierda(p))) THEN {Izquierda(p)} ELSE $\emptyset$? FI})}
 \tadAxioma{HayUnoAlLado(c,p,ps)}{\IF \#ps = 1 THEN Distancia(p,dameUno(ps)) = 1 ELSE {\IF Distancia(p,dameUno(ps)) = 1 THEN true ELSE HayUnoAlLado(c,p,sinUno(ps)) FI} FI}
-\tadAxioma{NuevaPosición\footnotemark(c,p,ps)}{{\IF HayUnoAlLado(c,p,ps) THEN p ELSE {\IF EstáArriba?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN NuevaPosiciónArriba(c,p,ps) ELSE {\IF EstáAbajo?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN NuevaPosiciónAbajo(c,p,ps) ELSE {\IF EstáALaDerecha?(dameUno(PosicionesA- \newline MenorDistancia(p,ps)),p) THEN NuevaPosiciónALaDerecha(c,p,ps) ELSE {\IF EstáALaIzquierda?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN NuevaPosiciónALaIzquierda(c,p,ps) ELSE {\IF EstáEnLaPrimerDiagonal?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN NuevaPosiciónEnLaPrimerDiagonal(c,p,ps) ELSE {\IF 
+\tadAxioma{NuevaPosición\footnotemark[7](c,p,ps)}{{\IF HayUnoAlLado(c,p,ps) THEN p ELSE {\IF EstáArriba?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN NuevaPosiciónArriba(c,p,ps) ELSE {\IF EstáAbajo?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN NuevaPosiciónAbajo(c,p,ps) ELSE {\IF EstáALaDerecha?(dameUno(PosicionesA- \newline MenorDistancia(p,ps)),p) THEN NuevaPosiciónALaDerecha(c,p,ps) ELSE {\IF EstáALaIzquierda?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN NuevaPosiciónALaIzquierda(c,p,ps) ELSE {\IF EstáEnLaPrimerDiagonal?(dameUno(PosicionesAMenorDistancia(p,ps)),p) THEN NuevaPosiciónEnLaPrimerDiagonal(c,p,ps) ELSE {\IF 
 EstáEnLaSegundaDiagonal?(dameUno(PosicionesAMenorDistancia(p,ps)) \newline ,p) THEN NuevaPosiciónEnLaSegundaDiagonal(c,p,ps) ELSE {\IF 
   EstáEnLaTercerDiagonal?(dameUno(PosicionesAMenorDistancia(p, \newline ps)),p) THEN NuevaPosiciónEnLaTercerDiagonal(c,p,ps)  ELSE {\IF dameUno({$\langle$ $\pi_1$(p) + 1,$\pi_2$(p)$\rangle$} $\cup$ {$\langle$ $\pi_1$(p),$\pi_2$(p) - 1$\rangle$}) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno({$\langle$ $\pi_1$(p) + 1,$\pi_2$(p) $\rangle$} $\cup$ {$\langle$ $\pi_1$(p),$\pi_2$(p) - 1 $\rangle$}) ELSE {\IF dameUno(sinUno({$\langle$ $\pi_1$(p) + 1,$\pi_2$(p) $\rangle$} $\cup$ {$\langle$ $\pi_1$(p),$\pi_2$(p) - 1 $\rangle$})) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno(sinUno({$\langle$ $\pi_1$(p) + 1,$\pi_2$(p)$\rangle$} $\cup$ {$\langle$ $\pi_1$(p),$\pi_2$(p) - 1$\rangle$})) ELSE dameUno(OpcionesDeMovimiento(c, \newline p)) FI} FI} FI} FI} FI} FI} FI} FI} FI} FI}}
-\footnotetext{La persona (hippie o estudiante) a alcanzar puede estar arriba, abajo, etc. (ver nota 2), por eso en el último else la persona está en el sector del mapa que queda: en la cuarta diagonal.}
+
+\footnotetext[7]{La persona (hippie o estudiante) a alcanzar puede estar arriba, abajo, etc. (ver nota 2), por eso en el último else la persona está en el sector del mapa que queda: en la cuarta diagonal.}
+
 \tadAxioma{NuevaPosiciónArriba(c,p,ps)}{\IF $\langle$ $\pi_1$(p),$\pi_2$(p) + 1$\rangle$ $\in$ OpcionesDeMovimiento(c,p) THEN $\langle$ $\pi_1$(p),$\pi_2$(p) + 1 $\rangle$ ELSE dameUno(PosicionesAMenorDistancia(dameUno(PosicionesA-\newline MenorDistancia(p,ps)),OpcionesDeMovimiento(c,p))) FI}
 \tadAxioma{NuevaPosiciónAbajo(c,p,ps)}{\IF $\langle$ $\pi_1$(p),$\pi_2$(p) - 1 $\rangle$ $\in$ OpcionesDeMovimiento(c,p) THEN $\langle$ $\pi_1$(p),$\pi_2$(p) - 1 $\rangle$ ELSE dameUno(PosicionesAMenorDistancia(dameUno(PosicionesAMe- \newline norDistancia(p,ps)),OpcionesDeMovimiento(c,p))) FI}
 \tadAxioma{NuevaPosiciónALaDerecha(c,p,ps)}{\IF $\langle$ $\pi_1$(p) + 1,$\pi_2$(p) $\rangle$ $\in$ OpcionesDeMovimiento(c,p) THEN $\langle$ $\pi_1$(p) + 1,$\pi_2$(p) $\rangle$ ELSE dameUno(PosicionesAMenorDistancia(dameUno(PosicionesAMe- \newline norDistancia(p,ps)),OpcionesDeMovimiento(c,p))) FI} 
