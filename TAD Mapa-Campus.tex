@@ -60,7 +60,7 @@
 \tadOperacion{alto}{map}{nat}{}
 
 \tadGeneradores
-\tadOperacion{nuevoMapa}{nat /al, nat /an,conj(tupla(nat, nat)/obstaculos}{map}{(al $\geq$ 1) $\land$ (an $\geq$ 1) $\land$ (\paratodo{tupla(nat,nat)}{o}) (o $\in$ obstaculos $\iff$ (1 $\leq$ $\pi_1$(o) $\leq$ an $\land$ \newline 1 $\leq$ $\pi_2$(o) $\leq$ al))}
+\tadOperacion{nuevoMapa}{nat /al, nat /an,conj(tupla(nat, nat)/obstaculos}{map}{(al $\geq$ 1) $\land$ (an $\geq$ 1) $\land$ (\paratodo{tupla(nat,nat)}{o}) (o $\in$ obstaculos $\implies$ (1 $\leq$ $\pi_1$(o) $\leq$ an $\land$ \newline 1 $\leq$ $\pi_2$(o) $\leq$ al))}
 
 \tadOtrasOperaciones
 \tadOperacion{Distancia}{posición,posición}{nat (origen,destino)}{}
@@ -138,10 +138,10 @@
 \tadOperacion{entraH}{camp /c, posición /p}{camp}{R1}
 \tadOperacion{entraE}{camp /c, posición /p}{camp}{R1}
 \tadOperacion{mueveH}{camp /c ,posición /p}{camp}{p $\in$ hippies(c)}
-\tadOperacion{mueveE}{camp /c,posición /origen, posición /destino}{camp}{(origen $\in$ estudiantes(c)) $\land$ ($\neg$(fueraDelMapa(map(c) $\times$ destino)))}
+\tadOperacion{mueveE}{camp /c,posición /origen, posición /destino}{camp}{(origen $\in$ estudiantes(c)) $\land$ ($\neg$(fueraDelMapa(map(c),destino)))$\land$ (LugarVacío(c,destino)) }
 \tadOperacion{mueveA}{camp /c, posición /p}{camp}{(p $\in$ claves(agentes(c))) $\land$ ($\pi_3$(obtener(p,agente(c))) < 3)}
 
-R1 := 1 $\leq$ $\pi_1$(p) $\leq$ ancho(m) $\land$ ($\pi_2$(p) = 0 $\lor$ $\pi_2$(p) = alto(mapa(c))) $\land$ $\neg$(p $\in$ obstaculos(mapa(c))) $\land$ $\neg$(p $\in$ estudiantes(c)) $\land$ $\neg$(p $\in$ claves(agentes(c))) $\land$ $\neg$(p $\in$ hippies(c))
+R1 := 1 $\leq$ $\pi_1$(p) $\leq$ ancho(m) $\land$ ($\pi_2$(p) = 1 $\lor$ $\pi_2$(p) = alto(mapa(c))) $\land$ $\neg$(p $\in$ obstaculos(mapa(c))) $\land$ $\neg$(p $\in$ estudiantes(c)) $\land$ $\neg$(p $\in$ claves(agentes(c))) $\land$ $\neg$(p $\in$ hippies(c))
 
 \tadOtrasOperaciones
 \tadOperacion{\#hippies}{camp}{nat}{}
@@ -164,55 +164,61 @@ R1 := 1 $\leq$ $\pi_1$(p) $\leq$ ancho(m) $\land$ ($\pi_2$(p) = 0 $\lor$ $\pi_2$
 \tadOperacion{NuevaPosicionAbajo}{camp /c, posicion /p, conj(posicion) /ps}{posición}{R2}
 \tadOperacion{NuevaPosicionALaDerecha}{camp /c, posicion /p, conj(posicion) /ps}{posición}{R2}
 \tadOperacion{NuevaPosicionALaIzquierda}{camp /c, posicion /p, conj(posicion) /ps}{posición}{R2}
-\tadOperacion{NuevaPosicionEnLaPrimerDiagonal}{camp /c, posicion /p, conj(posicion) /ps}{posición}{R2}
-\tadOperacion{NuevaPosicionEnLaSegundaDiagonal}{camp /c, posicion /p, conj(posicion) /ps}{posición}{R2}
-\tadOperacion{NuevaPosicionEnLaTercerDiagonal}{camp /c, posicion /p, conj(posicion) /ps}{posición}{R2}
-\tadOperacion{convertidoEnH}{posición /p, conj(posición) /hippies}{bool}{}
-\tadOperacion{convertidoEnE}{posición /p, conj(posición) /estudiantes, conj(posición) /obstáculos}{bool}{}
-\tadOperacion{captores}{posición /p, conj(posición) /agentes, conj(posición) obstáculos}{conj(posición)}{}
-\tadOperacion{sancionar}{agente /a}{agente}{}
-\tadOperacion{sumarCaptura}{agente /a}{agente}{}
-\tadOperacion{sancionarCaptores}{dicc(pos,agente) /agentes, conj(posición) /captores}{dicc(pos,agente)}{\paratodo{p $\in$ captores $\implies$ p $\in$ claves(agentes)}{(p : posicion)}}
-\tadOperacion{sumarCapturas}{dicc(pos,agente) /agentes, conj(posición) /captores}{dicc(pos,agente)}{\paratodo{p $\in$ captores $\implies$ p $\in$ claves(agentes)}{(p : posicion)}}
-\tadOperacion{esPosSiguiente}{posición /p_1, posición /p_2}{bool}{}
-\tadOperacion{posPrimera}{conj(posición) /ps}{posición}{$\neg0?(\#ps)$}
-\tadOperacion{posSiguientes}{posición /p, conj(posición) /ps}{conj(posición)}{}
-\tadOperacion{siguiente}{posición /p, conj(posición) /ps}{posición}{}
-\tadOperacion{convertirEnHippiesR}{posición /p, conj(posición) /estudiantes, conj(posición) /hippies}{tupla(conj(posición), conj(posición))}{}
+\tadOperacion{NuevaPosiciónEnLaPrimerDiagonal}{camp /c, posición /p, conj(posición) /ps}{posición}{R2}
+\tadOperacion{NuevaPosiciónEnLaSegundaDiagonal}{camp /c, posición /p, conj(posición) /ps}{posición}{R2}
+\tadOperacion{NuevaPosiciónEnLaTercerDiagonal}{camp /c, posición /p, conj(posición) /ps}{posición}{R2}
+\tadOperacion{ConvertidoEnH}{posición /p, conj(posición) /hippies}{bool}{}
+\tadOperacion{ConvertidoEnE}{posición /p, conj(posición) /estudiantes, conj(posición) /obstaculos}{bool}{}
+\tadOperacion{Captores}{posición /p, conj(posición) /agentes, conj(posición) /obstaculos}{conj(posición)}{}
+\tadOperacion{Sancionar}{agente /a}{agente}{}
+\tadOperacion{SumarCaptura}{agente /a}{agente}{}
+\tadOperacion{SancionarCaptores}{dicc(pos,agente) /agentes, conj(posición) /captores}{dicc(pos,agente)}{\paratodo{p $\in$ captores $\implies$ p $\in$ claves(agentes)}{(p : posicion)}}
+\tadOperacion{SumarCapturas}{dicc(pos,agente) /agentes, conj(posición) /captores}{dicc(pos,agente)}{\paratodo{p $\in$ captores $\implies$ p $\in$ claves(agentes)}{(p : posicion)}}
+\tadOperacion{EsPosSiguiente}{posición /p_1, posición /p_2}{bool}{}
+\tadOperacion{PosPrimera}{conj(posición) /ps}{posición}{$\neg0?(\#ps)$}
+\tadOperacion{PosSiguientes}{posición /p, conj(posición) /ps}{conj(posición)}{}
+\tadOperacion{Siguiente}{posición /p, conj(posición) /ps}{posición}{}
+\tadOperacion{ConvertirEnHippiesR}{posición /p, conj(posición) /estudiantes, conj(posición) /hippies}{tupla(conj(posición), conj(posición))}{}
 *devuelve: tupla(conj(posición), conj(posición)) \newline
 *devuelve estudiantes y hippies
-\tadOperacion{convertirEnEstudiantesR}{posición /p, conj(posición) /estudiantes, conj(posición) /hippies, conj(posición) /obstáculos}{tupla(conj(posición), conj(posición))}{}
+\tadOperacion{ConvertirEnEstudiantesR}{posición /p, conj(posición) /estudiantes, conj(posición) /hippies, conj(posición) /obstáculos}{tupla(conj(posición), conj(posición))}{}
 *devuelve: tupla(conj(posición), conj(posición)) \newline
 *devuelve estudiantes y hippies
-\tadOperacion{capturarR}{posición /p, conj(posición) /estudiantes, conj(posición) /hippies, dicc(posición,agente) agentes, conj(posición) /obstaculos}{tupla(conj(posición),conj(posición),dicc(posición,agente))}{}
+\tadOperacion{CapturarR}{posición /p, conj(posición) /estudiantes, conj(posición) /hippies, dicc(posición,agente) agentes, conj(posición) /obstaculos}{tupla(conj(posición),conj(posición),dicc(posición,agente))}{}
 *devuelve: tupla(conj(posición),conj(posición),dicc(posición,agente)) \newline
 *devuelve estudiantes, hippies y agentes
-\tadOperacion{capturar}{tupla(conj(posición),conj(posición)) /tuplaEstudiantesYHippies, dicc(posición,agente) /agentes, conj(posición) /obstaculos}{tupla(conj(posición),conj(posición),dicc(posición,agente))}{}
+\tadOperacion{Capturar}{tupla(conj(posición),conj(posición)) /tuplaEstudiantesYHippies, dicc(posición,agente) /agentes, conj(posición) /obstaculos}{tupla(conj(posición),conj(posición),dicc(posición,agente))}{}
 *devuelve: tupla(conj(posición),conj(posición),dicc(posición,agente)) \newline
 *devuelve estudiantes, hippies y agentes
-\tadOperacion{convertirEnEstudiantes}{tupla(conj(posición),conj(posición)) /tuplaEstudiantesYHippies, conj(posición) /obstaculos}{tupla(conj(posición),conj(posición))}{}
+\tadOperacion{ConvertirEnEstudiantes}{tupla(conj(posición),conj(posición)) /tuplaEstudiantesYHippies, conj(posición) /obstaculos}{tupla(conj(posición),conj(posición))}{}
 *devuelve: tupla(conj(posición), conj(posición)) \newline
 *devuelve estudiantes y hippies
-\tadOperacion{convertirEnHippies}{conj(posición) /estudiantes, conj(posición) hippies}{tupla(conj(posición),conj(posición))}{}
+\tadOperacion{ConvertirEnHippies}{conj(posición) /estudiantes, conj(posición) hippies}{tupla(conj(posición),conj(posición))}{}
 *devuelve: tupla(conj(posición), conj(posición)) \newline
 *devuelve estudiantes y hippies
-\tadOperacion{eNuevo}{campus /c, posición p}{ tupla(conj(posición),conj(posición),dicc(posición,agente))}{$(\pi_2(p) = 1 \vee \pi_2(p) = alto(mapa(c))) \wedge 1 \leq \pi_1(p) \wedge \pi_1(p) \leq ancho(mapa(c)) \wedge p \notin obstaculos(mapa(c)) \wedge p \notin estudiantes(c) \wedge p \notin hippies(c) \wedge p \notin claves(agentes(c))$}
+\tadOperacion{ENuevo}{campus /c, posición p}{ tupla(conj(posición),conj(posición),dicc(posición,agente))}{R3}
 *devuelve: tupla(conj(posición),conj(posición),dicc(posición,agente)) \newline
 *devuelve estudiantes, hippies y agentes
-\tadOperacion{hNuevo}{campus /c, posición p}{ tupla(conj(posición),conj(posición),dicc(posición,agente))}{$(\pi_2(p) = 1 \vee \pi_2(p) = alto(mapa(c))) \wedge 1 \leq \pi_1(p) \wedge \pi_1(p) \leq ancho(mapa(c)) \wedge p \notin obstaculos(mapa(c)) \wedge p \notin estudiantes(c) \wedge p \notin hippies(c) \wedge p \notin claves(agentes(c))$}
+\tadOperacion{HNuevo}{campus /c, posición /p}{ tupla(conj(posición),conj(posición),dicc(posición,agente))}{R3}
 *devuelve: tupla(conj(posición),conj(posición),dicc(posición,agente)) \newline
 *devuelve estudiantes, hippies y agentes
-\tadOperacion{eMovido}{campus /c, posición /p1, posición /p2}{ tupla(conj(posición),conj(posición),dicc(posición,agente))}{$1 \leq \pi_1(p2) \wedge \pi_1(p2) \leq ancho(mapa(c)) \wedge 1 \leq \pi_2(p2) \wedge \pi_2(p2) \leq alto(mapa(c)) \wedge p2 \notin obstaculos(mapa(c)) \wedge p2 \notin estudiantes(c) \wedge p2 \notin hippies(c) \wedge p2 \notin claves(agentes(c)) \wedge p1 \in estudiantes(c)$}
+\tadOperacion{EMovido}{campus /c, posición /p1, posición /p2}{ tupla(conj(posición),conj(posición),dicc(posición,agente))}{$1 \leq \pi_1(p2) \wedge \pi_1(p2) \leq ancho(mapa(c)) \wedge 1 \leq \pi_2(p2) \wedge \pi_2(p2) \leq alto(mapa(c)) \wedge p2 \notin obstaculos(mapa(c)) \wedge p2 \notin estudiantes(c) \wedge p2 \notin hippies(c) \wedge p2 \notin claves(agentes(c)) \wedge p1 \in estudiantes(c)$}
 *devuelve: tupla(conj(posición),conj(posición),dicc(posición,agente)) \newline
 *devuelve estudiantes, hippies y agentes
-\tadOperacion{hMovido}{campus /c, posición /p1, posición /p2}{tupla(conj(posición),conj(posición),dicc(posición,agente))}{$1 \leq \pi_1(p2) \wedge \pi_1(p2) \leq ancho(mapa(c)) \wedge 1 \leq \pi_2(p2) \wedge \pi_2(p2) \leq alto(mapa(c)) \wedge p2 \notin obstaculos(mapa(c)) \wedge p2 \notin estudiantes(c) \wedge p2 \notin hippies(c) \wedge p2 \notin claves(agentes(c)) \wedge p1 \in hippies(c)$}
+\tadOperacion{HMovido}{campus /c, posición /p1, posición /p2}{tupla(conj(posición),conj(posición),dicc(posición,agente))}{$1 \leq \pi_1(p2) \wedge \pi_1(p2) \leq ancho(mapa(c)) \wedge 1 \leq \pi_2(p2) \wedge \pi_2(p2) \leq alto(mapa(c)) \wedge p2 \notin obstaculos(mapa(c)) \wedge p2 \notin estudiantes(c) \wedge p2 \notin hippies(c) \wedge p2 \notin claves(agentes(c)) \wedge p1 \in hippies(c)$}
 *devuelve: tupla(conj(posición),conj(posición),dicc(posición,agente)) \newline
 *devuelve estudiantes, hippies y agentes
-\tadOperacion{aMovido}{campus /c, posición /p1, posición /p2}{tupla(conj(posición),conj(posición),dicc(posición,agente))}{$1 \leq \pi_1(p2) \wedge \pi_1(p2) \leq ancho(mapa(c)) \wedge 1 \leq \pi_2(p2) \wedge \pi_2(p2) \leq alto(mapa(c)) \wedge p2 \notin obstaculos(mapa(c)) \wedge p2 \notin estudiantes(c) \wedge p2 \notin hippies(c) \wedge p2 \notin claves(agentes(c)) \wedge p1 \in claves(agentes((c)))$}
+\tadOperacion{AMovido}{campus /c, posición /p1, posición /p2}{tupla(conj(posición),conj(posición),dicc(posición,agente))}{$1 \leq \pi_1(p2) \wedge \pi_1(p2) \leq ancho(mapa(c)) \wedge 1 \leq \pi_2(p2) \wedge \pi_2(p2) \leq alto(mapa(c)) \wedge p2 \notin obstaculos(mapa(c)) \wedge p2 \notin estudiantes(c) \wedge p2 \notin hippies(c) \wedge p2 \notin claves(agentes(c)) \wedge p1 \in claves(agentes((c)))$}
 *devuelve: tupla(conj(posición),conj(posición),dicc(posición,agente)) \newline
 *devuelve estudiantes, hippies y agentes
 
 R2 := (p $\in$ hippies(c)) $\lor$ (p $\in$ claves(agentes(c)))) $\land$ $\neg(\emptyset$?(ps))
+
+
+
+R3 := $(\pi_2(p)$ = 1 $\vee \pi_2(p)$ = alto(mapa(c))) $\wedge$ 1 $\leq$ $\pi_1(p)$ $\wedge \pi_1(p)$ $\leq$ ancho(mapa(c)) $\wedge$ p $\notin$ obstaculos(mapa(c)) $\wedge$ p $\notin$ estudiantes(c) $\land$ p $\notin$ hippies(c) $\wedge$ p $\notin$ claves(agentes(c))
+
+
 
 \tadAxiomas[\paratodo{camp}{c}, \paratodo{map}{m}, \paratodo{posición}{p, p1, p2}, \paratodo{conj(posición)}{ps,es,hs,os,as}, \paratodo{dicc(posicion,agente)}{das},\newline \paratodo{nat}{capturas}, \paratodo{tupla(conj(posición),conj(posición))}{tuplaEyH}]
 
@@ -268,116 +274,116 @@ EstáEnLaSegundaDiagonal?(dameUno(PosicionesAMenorDistancia(p,ps)) \newline ,p) T
 \tadAxioma{NuevaPosiciónEnLaPrimerDiagonal(c,p,ps)}{\IF dameUno({ $\langle$ $\pi_1$(p) + 1,$\pi_2$(p)$\rangle$} $\cup$ {$\langle$ $\pi_1$(p),$\pi_2$(p) + 1$\rangle$}) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno({$\langle$ $\pi_1$(p) + 1,$\pi_2$(p) $\rangle$} $\cup$ {$\langle$ $\pi_1$(p),$\pi_2$(p) + 1 $\rangle$}) ELSE {\IF dameUno(sinUno({$\langle$ $\pi_1$(p) + 1,$\pi_2$(p) $\rangle$} $\cup$ {$\langle$ $\pi_1$(p),$\pi_2$(p) + 1 $\rangle$})) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno(sinUno({$\langle$ $\pi_1$(p) + 1,$\pi_2$(p) $\rangle$} $\cup$ {$\langle$ $\pi_1$(p),$\pi_2$(p) + 1 $\rangle$})) ELSE dameUno(OpcionesDeMovimiento(c,p)) FI} FI}
 \tadAxioma{NuevaPosicionEnLaSegundaDiagonal(c,p,ps)}{\IF dameUno({$\langle$ $\pi_1$(p) - 1,$\pi_2$(p) $\rangle$} $\cup$ {$\langle$ $\pi_1$(p),$\pi_2$(p) + 1 $\rangle$}) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno({$\langle$ $\pi_1$(p) - 1,$\pi_2$(p) $\rangle$} $\cup$ {$\langle$ $\pi_1$(p),$\pi_2$(p) + 1 $\rangle$}) ELSE {\IF dameUno(sinUno({$\langle$ $\pi_1$(p) - 1,$\pi_2$(p) $\rangle$} $\cup$ {$\langle$ $\pi_1$(p),$\pi_2$(p) + 1 $\rangle$})) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno(sinUno({$\langle$ $\pi_1$(p) - 1,$\pi_2$(p) $\rangle$} $\cup$ {$\langle$ $\pi_1$(p),$\pi_2$(p) + 1 $\rangle$})) ELSE dameUno(OpcionesDeMovimiento(c,p)) FI} FI}
 \tadAxioma{NuevaPosicionEnLaTercerDiagonal(c,p,ps)}{\IF dameUno({$\langle$ $\pi_1$(p) - 1,$\pi_2$(p) $\rangle$} $\cup$ {$\langle$ $\pi_1$(p),$\pi_2$(p) - 1 $\rangle$}) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno({$\langle$ $\pi_1$(p) - 1,$\pi_2$(p) $\rangle$} $\cup$ {$\langle$ $\pi_1$(p),$\pi_2$(p) - 1 $\rangle$}) ELSE {\IF dameUno(sinUno({$\langle$ $\pi_1$(p) - 1,$\pi_2$(p)$\rangle$} $\cup$ {$\langle$ $\pi_1$(p),$\pi_2$(p) - 1$\rangle$})) $\in$ OpcionesDeMovimiento(c,p) THEN dameUno(sinUno({$\langle$ $\pi_1$(p) - 1,$\pi_2$(p)$\rangle$} $\cup$ {$\langle$ $\pi_1$(p),$\pi_2$(p) - 1$\rangle$})) ELSE dameUno(OpcionesDeMovimiento(c,p)) FI} FI}
-\tadAxioma{convertidoEnH(p,hs)}{2 $\leq$ $\#$tocando(p,hs)}
-\tadAxioma{convertidoEnE(p,es,os)}{4 = ($\#$tocando(p,es) + $\#$tocando(p,os)) $\wedge$ 3 $\leq$ $\#$tocando(p,es)}
-\tadAxioma{captores(p,as,os)}{\IF 4 = ($\#$tocando(p,as) + $\#$tocando(p,os)) THEN
-	tocando(p,as)
+\tadAxioma{ConvertidoEnH(p,hs)}{2 $\leq$ $\#$Tocando(p,hs)}
+\tadAxioma{ConvertidoEnE(p,es,os)}{4 = ($\#$Tocando(p,es) + $\#$Tocando(p,os)) $\wedge$ 3 $\leq$ $\#$Tocando(p,es)}
+\tadAxioma{Captores(p,as,os)}{\IF 4 = ($\#$Tocando(p,as) + $\#$Tocando(p,os)) THEN
+	Tocando(p,as)
 ELSE
 	$\emptyset$
 FI}
-\tadAxioma{sancionar(a)}{$\langle \pi_1(a), \pi_2(a), suc(\pi_3(a)) \rangle$}
-\tadAxioma{sumarCaptura(a)}{$\langle \pi_1(a), suc(\pi_2(a)), \pi_3(a) \rangle$}
-\tadAxioma{sancionarCaptores(das,cs)}{\IF vacío?(cs) THEN
+\tadAxioma{Sancionar(a)}{$\langle \pi_1(a), \pi_2(a), suc(\pi_3(a)) \rangle$}
+\tadAxioma{SumarCaptura(a)}{$\langle \pi_1(a), suc(\pi_2(a)), \pi_3(a) \rangle$}
+\tadAxioma{SancionarCaptores(das,cs)}{\IF $\emptyset$?(cs) THEN
   	as
 ELSE
-sancionarCaptores(definir(dameUno(cs),
-sancionar(obtener(dameUno(cs))),
+SancionarCaptores(definir(dameUno(cs),
+Sancionar(obtener(dameUno(cs))),
 		borrar(dameUno(cs),das)),sinUno(cs))
 FI}
-\tadAxioma{sumarCapturas(das,cs)}{\IF vacío?(cs) THEN
+\tadAxioma{SumarCapturas(das,cs)}{\IF $\emptyset$?(cs) THEN
 	as
 ELSE
-sumarCapturas(definir(dameUno(cs),
-sumarCaptura(obtener(dameUno(cs))),
+SumarCapturas(definir(dameUno(cs),
+SumarCaptura(obtener(dameUno(cs))),
 		borrar(dameUno(cs),das)),sinUno(cs))
 FI}
-\tadAxioma{esPosSiguiente($p_1$,$p_2$)}{$\pi_2(p_2) < \pi_2(p_1) \vee (\pi_2(p_1) = \pi_2(p_2) \wedge \pi_1(p_2) < \pi_1(p_1))$}
-\tadAxioma{posPrimera(ps)}{\IF $\#$ps = 1 THEN
+\tadAxioma{EsPosSiguiente($p_1$,$p_2$)}{$\pi_2(p_2) < \pi_2(p_1) \vee (\pi_2(p_1) = \pi_2(p_2) \wedge \pi_1(p_2) < \pi_1(p_1))$}
+\tadAxioma{PosPrimera(ps)}{\IF $\#$ps = 1 THEN
 	dameUno(ps)
-ELSE ({\IF esPosSiguiente(posPrimera(sinUno(ps)),dameUno(ps)) THEN
+ELSE ({\IF EsPosSiguiente(PosPrimera(sinUno(ps)),dameUno(ps)) THEN
 	dameUno(ps)
 ELSE
-	posPrimera(sinUno(ps))
+	PosPrimera(sinUno(ps))
 FI}) FI}
-\tadAxioma{posSiguientes(p,ps)}{\IF vacío?(ps) THEN
+\tadAxioma{PosSiguientes(p,ps)}{\IF $\emptyset$?(ps) THEN
 	$\emptyset$
-ELSE ({\IF esPosSiguiente(dameUno(ps),p) THEN
-	Ag(dameUno(ps),posSiguientes(p,sinUno(ps)))
+ELSE ({\IF EsPosSiguiente(dameUno(ps),p) THEN
+	Ag(dameUno(ps),PosSiguientes(p,sinUno(ps)))
 ELSE
-	posSiguientes(p,sinUno(ps))
+	PosSiguientes(p,sinUno(ps))
 FI}) FI}
-\tadAxioma{siguiente(p,ps)}{\IF vacío?(posSiguientes(p,ps)) THEN
+\tadAxioma{Siguiente(p,ps)}{\IF $\emptyset$?(PosSiguientes(p,ps)) THEN
 	$\langle 0, 0 \rangle$
 ELSE
-	posPrimera(posSiguientes(p,ps))
+	PosPrimera(PosSiguientes(p,ps))
 FI}
-\tadAxioma{convertirEnHippiesR(p,es,hs)}{\IF p $\in$ es $\wedge$ convertidoEnH(p,hs) THEN
-	convertirEnHippiesR(siguiente($\langle 0, 0 \rangle$, es - $\{p\}$),es - $\{p\}$, Ag(p,hs))
-ELSE ({\IF $\neg$convertidoEnH(p,hs) THEN
-	convertirEnHippiesR(siguiente(p,es),es,hs)
+\tadAxioma{ConvertirEnHippiesR(p,es,hs)}{\IF p $\in$ es $\wedge$ ConvertidoEnH(p,hs) THEN
+	ConvertirEnHippiesR(Siguiente($\langle 0, 0 \rangle$, es - $\{p\}$),es - $\{p\}$, Ag(p,hs))
+ELSE ({\IF $\neg$ConvertidoEnH(p,hs) THEN
+	ConvertirEnHippiesR(Siguiente(p,es),es,hs)
 ELSE
     $\langle es, hs \rangle$
 FI}) FI}
-\tadAxioma{convertirEnEstudiantesR(p,es,hs,os)}{\IF p $\in$ hs $\wedge$ convertidoEnE(p,es,os) THEN
-	convertirEnEstudiantesR(siguiente($\langle 0, 0 \rangle$,hs - $\{p\}$),Ag(p,es),hs - $\{p\}$,os)
-ELSE ({\IF $\neg$convertidoEnE(p,es,os) THEN
-	convertirEnEstudiantesR(siguiente(p,hs),es,hs,os)
+\tadAxioma{ConvertirEnEstudiantesR(p,es,hs,os)}{\IF p $\in$ hs $\wedge$ ConvertidoEnE(p,es,os) THEN
+	ConvertirEnEstudiantesR(Siguiente($\langle 0, 0 \rangle$,hs - $\{p\}$),Ag(p,es),hs - $\{p\}$,os)
+ELSE ({\IF $\neg$ConvertidoEnE(p,es,os) THEN
+	ConvertirEnEstudiantesR(Siguiente(p,hs),es,hs,os)
 ELSE
 	$\langle es, hs \rangle$
 FI}) FI}
-\tadAxioma{capturarR(p,es,hs,das,os)}{\IF p $\in$ es $\wedge$ 0 < $\#$captores(p,claves(das),os) THEN
-	capturarR(siguiente(p,es $\cup$ hs),es - $\{p\}$,hs,sancionarCaptores(das,captores(p,claves(das),os)),os)
-ELSE ({\IF p $\in$ h $\wedge$ 0 < $\#$captores(p,claves(das),os) THEN
-	capturarR(siguiente(p,es $\cup$ h),es,hs - $\{p\}$,sumarCapturas(das,captores(p,claves(das),os)),os)
+\tadAxioma{CapturarR(p,es,hs,das,os)}{\IF p $\in$ es $\wedge$ 0 < $\#$Captores(p,claves(das),os) THEN
+	CapturarR(Siguiente(p,es $\cup$ hs),es - $\{p\}$,hs,SancionarCaptores(das,Captores(p,claves(das),os)),os)
+ELSE ({\IF p $\in$ h $\wedge$ 0 < $\#$Captores(p,claves(das),os) THEN
+	CapturarR(Siguiente(p,es $\cup$ h),es,hs - $\{p\}$,SumarCapturas(das,Captores(p,claves(das),os)),os)
 ELSE ({\IF p $\in$ (es $\cup$ hs) THEN
-	capturarR(siguiente(p,es $\cup$ hs),es,hs,das,os)
+	CapturarR(Siguiente(p,es $\cup$ hs),es,hs,das,os)
 ELSE
 	$\langle es,hs,das \rangle$
 FI}) FI}) FI}
-\tadAxioma{capturar(tuplaEyH,das,os)}{capturarR(
-  siguiente($\langle 0,0 \rangle$,$\pi_1$(tuplaEyH) $\cup$ $\pi_2$(tuplaEyH)),
+\tadAxioma{Capturar(tuplaEyH,das,os)}{CapturarR(
+  Siguiente($\langle 0,0 \rangle$,$\pi_1$(tuplaEyH) $\cup$ $\pi_2$(tuplaEyH)),
   $\pi_1$(tuplaEyH),
   $\pi_2$(tuplaEyH),
   as,
-  os $\cup$ $pi_1$(tuplaEyH) $\cup$ $\pi_2$(tuplaEyH)
+  os $\cup$ $\pi_1$(tuplaEyH) $\cup$ $\pi_2$(tuplaEyH)
 )}
-\tadAxioma{convertirEnEstudiantes(tuplaEyH,os)}{convertirEnEstudiantesR(
-  siguiente($\langle 0,0 \rangle$,$\pi_2$(tuplaEyH)),
+\tadAxioma{ConvertirEnEstudiantes(tuplaEyH,os)}{ConvertirEnEstudiantesR(
+  Siguiente($\langle 0,0 \rangle$,$\pi_2$(tuplaEyH)),
   $\pi_1$(tuplaEyH),
   $\pi_2$(tuplaEyH),
   os
 )}
-\tadAxioma{convertirEnHippies(es,hs)}{convertirEnHippiesR(siguiente($\langle 0,0 \rangle$,es),es,hs)}
-\tadAxioma{movido(es,hs,das,m)}{capturar(
-	convertirEnEstudiantes(
-		convertirEnHippies(es,hs),obstaculos(m) $\cup$ claves(das)
+\tadAxioma{ConvertirEnHippies(es,hs)}{ConvertirEnHippiesR(Siguiente($\langle 0,0 \rangle$,es),es,hs)}
+\tadAxioma{Movido(es,hs,das,m)}{Capturar(
+	ConvertirEnEstudiantes(
+		ConvertirEnHippies(es,hs),obstaculos(m) $\cup$ claves(das)
 	),das,obstaculos(m)
 )}
-\tadAxioma{eNuevo(c,p)}{movido(
+\tadAxioma{ENuevo(c,p)}{Movido(
   Ag(p,estudiantes(c)),
   hippies(c),
   agentes(c),
   mapa(c)
 )}
-\tadAxioma{hNuevo(c,p)}{movido(
+\tadAxioma{HNuevo(c,p)}{Movido(
   estudiantes(c),
   Ag(p,hippies(c)),
   agentes(c),
   mapa(c)
 )}
-\tadAxioma{eMovido(c,$p_1$,$p_2$)}{movido(
+\tadAxioma{EMovido(c,$p_1$,$p_2$)}{Movido(
   Ag($p_2$,estudiantes(c) - $\{p_1\}$),
   hippies(c),
   agentes(c),
   mapa(c)
 )}
-\tadAxioma{hMovido(c,$p_1$,$p_2$)}{movido(
+\tadAxioma{HMovido(c,$p_1$,$p_2$)}{Movido(
   estudiantes(c),
   Ag($p_2$,hippies(c) - $\{p_1\}$),
   agentes(c),
   mapa(c)
 )}
-\tadAxioma{aMovido(c,$p_1$,$p_2$)}{movido(
+\tadAxioma{AMovido(c,$p_1$,$p_2$)}{Movido(
   estudiantes(c),
   hippies(c),
   definir($p_1$,obtener($p_2$,agentes(c)),borrar($p_2$,agentes(c))),
